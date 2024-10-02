@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Make Payment</h1>
+    </header>
+
+    <section>
+        <form action="{{ url_for('make_payment') }}" method="POST">
+            <table>
+                <tr>
+                    <td><label for="payment_amount">Payment Amount:</label></td>
+                    <td><input type="number" id="payment_amount" name="payment_amount" required></td>
+                </tr>
+                <tr>
+                    <td><label for="payment_method">Payment Method:</label></td>
+                    <td>
+                        <select id="payment_method" name="payment_method" required>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Cash">Cash</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Complete Booking">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+
+</body>
+</html>

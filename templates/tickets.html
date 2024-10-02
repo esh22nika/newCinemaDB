@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Tickets</title>
+</head>
+<body>
+    <h1>Available Tickets</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Movie Name</th>
+                <th>Price</th>
+                <th>Booking Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket[0] }}</td>
+                <td>{{ ticket[1] }}</td>
+                <td>{{ ticket[2] }}</td>
+                <td>{{ ticket[3] }}</td>
+                <td><a href="/book_ticket/{{ ticket[0] }}">Book</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/movies">Back to Movies</a>
+</body>
+</html>

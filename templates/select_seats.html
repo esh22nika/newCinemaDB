@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Select Seats</h1>
+    </header>
+
+    <section>
+        <form action="{{ url_for('select_seats') }}" method="POST">
+            <table>
+                <tr>
+                    <td><label for="seat_id">Select Seat:</label></td>
+                    <td>
+                        <select id="seat_id" name="seat_id" required>
+                            {% for seat in seats %}
+                                <option value="{{ seat[0] }}">Seat {{ seat[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="no_of_seats">Number of Seats:</label></td>
+                    <td><input type="number" id="no_of_seats" name="no_of_seats" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Next: Make Payment">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+
+</body>
+</html>

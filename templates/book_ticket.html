@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ticket</title>
+</head>
+<body>
+    <h1>Book Ticket for {{ ticket[1] }}</h1>
+    <p>Ticket ID: {{ ticket[0] }}</p>
+    <p>Price: {{ ticket[2] }}</p>
+    <form method="POST">
+        <!-- Add more fields as required -->
+        <button type="submit">Confirm Booking</button>
+    </form>
+    <a href="/tickets">Cancel</a>
+</body>
+</html>

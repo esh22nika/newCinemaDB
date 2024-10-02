@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Theatre Database</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<h1 style="color:green;text-align:center">Admin View</h1>
+<h2 style="color:green;text-align:center">Edit Employee Details</h2>
+<table border="1" style="width:100%; text-align:center;">
+    <thead>
+        <tr>
+            <th>Emp ID</th>
+            <th>Salary</th>
+            <th>Birth Date</th>
+            <th>Age</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Email ID</th>
+            <th>Phone Number</th>
+            <th>Dep ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] if row[0] is not none else 'N/A' }}</td>
+            <td>{{ row[1] if row[1] is not none else 'N/A' }}</td>
+            <td>{{ row[2] if row[2] is not none else 'N/A' }}</td>
+            <td>{{ row[3] if row[3] is not none else 'N/A' }}</td>
+            <td>{{ row[4] if row[4] is not none else 'N/A' }}</td>
+            <td>{{ row[5] if row[5] is not none else 'N/A' }}</td>
+            <td>{{ row[6] if row[6] is not none else 'N/A' }}</td>
+            <td>{{ row[7] if row[7] is not none else 'N/A' }}</td>
+            <td>{{ row[8] if row[8] is not none else 'N/A' }}</td>
+            <td>{{ row[9] if row[9] is not none else 'N/A' }}</td>
+            <td>{{ row[10] if row[10] is not none else 'N/A' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Add a New Employee</h2>
+<form action="/create" method="post">
+    <table>
+        <tr>
+            <td><label for="emp_id">Employee ID:</label></td>
+            <td><input type="text" id="emp_id" name="emp_id" placeholder="Employee ID" required></td>
+        </tr>
+        <tr>
+            <td><label for="salary">Salary:</label></td>
+            <td><input type="number" id="salary" name="salary" placeholder="Enter Salary" min="0" required></td>
+        </tr>
+        <tr>
+            <td><label for="birth_date">Birth Date:</label></td>
+            <td><input type="date" id="birth_date" name="birth_date" required></td>
+        </tr>
+        <tr>
+            <td><label for="age">Age:</label></td>
+            <td><input type="number" id="age" name="age" min="18" max="99" placeholder="Age" required></td>
+        </tr>
+        <tr>
+            <td><label for="first_name">First Name:</label></td>
+            <td><input type="text" id="first_name" name="first_name" placeholder="First Name" required></td>
+        </tr>
+        <tr>
+            <td><label for="middle_name">Middle Name:</label></td>
+            <td><input type="text" id="middle_name" name="middle_name" placeholder="Middle Name"></td>
+        </tr>
+        <tr>
+            <td><label for="last_name">Last Name:</label></td>
+            <td><input type="text" id="last_name" name="last_name" placeholder="Last Name" required></td>
+        </tr>
+        <tr>
+            <td><label for="gender">Gender:</label></td>
+            <td>
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="email_id">Email ID:</label></td>
+            <td><input type="email" id="email_id" name="email_id" placeholder="Email ID" required></td>
+        </tr>
+        <tr>
+            <td><label for="phone_no">Phone Number:</label></td>
+            <td><input type="tel" id="phone_no" name="phone_no" placeholder="Phone Number" pattern="[0-9]{10}" required></td>
+        </tr>
+        <tr>
+            <td><label for="dep_id">Department ID:</label></td>
+            <td><input type="number" id="dep_id" name="dep_id" placeholder="Department ID" required></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Create"></td>
+        </tr>
+    </table>
+</form>
+
+<h2>Update an Employee</h2>
+<form action="/update" method="post">
+    <table>
+        <tr>
+            <td><label for="emp_id_update">Employee ID:</label></td>
+            <td><input type="text" id="emp_id_update" name="emp_id" placeholder="Employee ID" required></td>
+        </tr>
+        <tr>
+            <td><label for="salary_update">Salary:</label></td>
+            <td><input type="number" id="salary_update" name="salary" placeholder="Update Salary"></td>
+        </tr>
+        <tr>
+            <td><label for="birth_date_update">Birth Date:</label></td>
+            <td><input type="date" id="birth_date_update" name="birth_date"></td>
+        </tr>
+        <tr>
+            <td><label for="age_update">Age:</label></td>
+            <td><input type="number" id="age_update" name="age" placeholder="Update Age"></td>
+        </tr>
+        <!-- Additional fields omitted for brevity -->
+        <tr>
+            <td colspan="2"><input type="submit" value="Update"></td>
+        </tr>
+    </table>
+</form>
+
+<h2>Delete an Employee</h2>
+<form action="/delete" method="post">
+    <table>
+        <tr>
+            <td><label for="emp_id_delete">Employee ID:</label></td>
+            <td><input type="text" id="emp_id_delete" name="emp_id" placeholder="Employee ID" required></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Delete"></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Employee Dashboard</h1>
+    </header>
+
+    <section>
+        <h2>Sell Tickets</h2>
+        <form action="{{ url_for('sell_ticket') }}" method="POST">
+            <table>
+                <tr>
+                    <td><label for="emp_id">Employee ID:</label></td>
+                    <td><input type="text" id="emp_id" name="emp_id" required></td>
+                </tr>
+                <tr>
+                    <td><label for="ticket_id">Ticket ID:</label></td>
+                    <td><input type="text" id="ticket_id" name="ticket_id" required></td>
+                </tr>
+                <tr>
+                    <td><label for="price">Price:</label></td>
+                    <td><input type="number" id="price" name="price" required></td>
+                </tr>
+                <tr>
+                    <td><label for="show">Show:</label></td>
+                    <td><input type="text" id="show" name="show" required></td>
+                </tr>
+                <tr>
+                    <td><label for="discount">Discount:</label></td>
+                    <td><input type="number" id="discount" name="discount" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Sell Ticket">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+
+    <section>
+        <h2>Add a Movie</h2>
+        <p><a href="{{ url_for('add_movie') }}" class="btn">Go to Add Movie</a></p>
+    </section>
+
+</body>
+</html>

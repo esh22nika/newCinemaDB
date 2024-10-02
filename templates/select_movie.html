@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Movie</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Select a Movie</h1>
+    </header>
+
+    <section>
+        <form action="{{ url_for('select_movie') }}" method="POST">
+            <table>
+                <tr>
+                    <td><label for="customer_id">Customer ID:</label></td>
+                    <td><input type="text" id="customer_id" name="customer_id" required></td>
+                </tr>
+                <tr>
+                    <td><label for="movie_id">Select Movie:</label></td>
+                    <td>
+                        <select id="movie_id" name="movie_id" required>
+                            {% for movie in movies %}
+                                <option value="{{ movie[0] }}">{{ movie[1] }} ({{ movie[2] }})</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="movie_lang">Select Language:</label></td>
+                    <td><input type="text" id="movie_lang" name="movie_lang" required></td>
+                </tr>
+                <tr>
+                    <td><label for="view_type">View Type:</label></td>
+                    <td><input type="text" id="view_type" name="view_type" required></td>
+                </tr>
+                <tr>
+                    <td><label for="show_time">Show Time:</label></td>
+                    <td><input type="text" id="show_time" name="show_time" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Next: Select Seats">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+
+</body>
+</html>

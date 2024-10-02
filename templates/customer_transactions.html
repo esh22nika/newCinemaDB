@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Transactions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Your Transactions</h1>
+    </header>
+
+    <section>
+        {% if transactions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Movie</th>
+                        <th>Language</th>
+                        <th>View Type</th>
+                        <th>Show Time</th>
+                        <th>Seats</th>
+                        <th>Total Amount</th>
+                        <th>Payment Method</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction['ticket_id'] }}</td>
+                            <td>{{ transaction['movie_name'] }}</td>
+                            <td>{{ transaction['movie_lang'] }}</td>
+                            <td>{{ transaction['view_type'] }}</td>
+                            <td>{{ transaction['show_time'] }}</td>
+                            <td>{{ transaction['no_of_seats'] }}</td>
+                            <td>{{ transaction['amount'] }}</td>
+                            <td>{{ transaction['payment_method'] }}</td>
+                            <td>{{ transaction['payment_date'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No transactions found.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>
