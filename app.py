@@ -21,16 +21,14 @@ def verifyAndRenderRespective():
     password = request.form['password']
 
     try:
-        if username == 'employee' and password == 'employee':
-            res = runQuery('call delete_old()')  # Example stored procedure for cleaning old data
+        if username == 'employee' and password == 'employee': 
             return render_template('employee.html')
 
         elif username == 'manager' and password == 'manager':
-            res = runQuery('call delete_old()')
-            return render_template('index.html') # Admin Dashboard
+            return render_template('index.html') 
 
-        elif username == 'customer' and password == 'customer':  # Simple customer login
-            return render_template('customer.html')  # Customer page
+        elif username == 'customer' and password == 'customer':  
+            return render_template('customer.html')  
 
         else:
             return render_template('loginfail.html')
@@ -231,11 +229,15 @@ def sell_ticket():
     emp_id = request.form['emp_id']
     ticket_id = request.form['ticket_id']
     price = request.form['price']
-    show = request.form['show']
     discount = request.form['discount']
-    cur.execute('''INSERT INTO tickets (emp_id, ticket_id, price, show, discount) 
-                   VALUES (%s, %s, %s, %s, %s)''', 
-                (emp_id, ticket_id, price, show, discount))
+    shows = request.form['shows']
+    movie_name = request.form['movie_name']
+    booking_date = request.form['booking_date']
+    customer = request.form['booking_date']
+    
+    cur.execute('''INSERT INTO tickets (ticket_id, price, discount, shows,movie_name,booking_date,customer_id, movies_id) 
+                   VALUES ( %s, %s, %s, %s)''', 
+                (ticket_id, price, discount, shows,movie_name,booking_date,customer_id, movies_id ))
     conn.commit()
     conn.close()
     return redirect(url_for('employee_dashboard'))
@@ -246,7 +248,7 @@ def sell_ticket():
 def add_movie():
     if request.method == 'POST':
         # Collect the form data
-        movie_id=request.form['movie_id']
+        movies_id=request.form['movies_id']
         movie_name = request.form['movie_name']
         release_date = request.form['release_date']
         genre = request.form['genre']
@@ -259,9 +261,9 @@ def add_movie():
         # Insert movie into the database
         conn = db_conn()
         cur = conn.cursor()
-        cur.execute('''INSERT INTO movies (movie_id,movie_name,  release_date, genre, roles,movie_lang,view_type) 
-                       VALUES (%s, %s, %s, %s, %s)''',
-                    (movie_id, movie_name,  release_date, genre, roles,movie_lang,view_type))
+        cur.execute('''INSERT INTO movies (movies_id,movie_name,  release_date, genre, roles,movie_lang,view_type) 
+                       VALUES (%s, %s, %s, %s, %s, %s, %s)''',
+                    (movies_id, movie_name,  release_date, genre, roles,movie_lang,view_type))
         conn.commit()
         cur.close()
         conn.close()
@@ -342,7 +344,7 @@ def make_payment():
 
         # Retrieve the data from session
         customer_id = session.get('customer_id')
-        movie_id = session.get('movie_id')
+        movies_id = session.get('movies_id')
         movie_lang = session.get('movie_lang')
         view_type = session.get('view_type')
         show_time = session.get('show_time')
@@ -350,16 +352,16 @@ def make_payment():
         no_of_seats = session.get('no_of_seats')
 
         # Generate ticket ID
-        cur.execute('''INSERT INTO tickets (customer_id, movie_id, movie_lang, view_type, show_time, seat_id, no_of_seats) 
+        cur.execute('''INSERT INTO bookingInfo (customer_id, movies_id, movie_lang, view_type, show_time, seat_id, no_of_seats) 
                        VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING ticket_id''',
-                    (customer_id, movie_id, movie_lang, view_type, show_time, seat_id, no_of_seats))
+                    (customer_id, movies_id, movie_lang, view_type, show_time, seat_id, no_of_seats))
         ticket_id = cur.fetchone()[0]
 
         # Update seat availability
         cur.execute('UPDATE seats SET available = FALSE WHERE seat_id = %s', (seat_id,))
 
         # Insert payment details into the payment table
-        cur.execute('''INSERT INTO payment (customer_id, ticket_id, amount, payment_method, payment_date) 
+        cur.execute('''INSERT INTO paymentInfo (customer_id, ticket_id, amount, payment_method, payment_date) 
                        VALUES (%s, %s, %s, %s, NOW())''', (customer_id, ticket_id, payment_amount, payment_method))
 
         conn.commit()

@@ -12,10 +12,40 @@
         <h1>Customer Dashboard</h1>
     </header>
 
-    <section>
+    <!-- Navigation Menu -->
+    <nav class="menu">
+        <ul>
+            <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('select_movie') }}">Book a Ticket</a></li>
+            <li><a href="{{ url_for('select_seats') }}">Select Seats</a></li>
+            <li><a href="{{ url_for('make_payment') }}">Make Payment</a></li>
+        </ul>
+    </nav>
+
+    <!-- Book a Ticket Section -->
+    <section class="booking-section">
         <h2>Book a Ticket</h2>
         <p><a href="{{ url_for('select_movie') }}" class="btn">Select a Movie</a></p>
     </section>
 
+    <!-- Movie Gallery Section -->
+    <section class="gallery">
+        <h2>New Releases</h2>
+        <div class="movie-gallery">
+            {% for movie in movies %}
+            <div class="movie-item">
+                <img src="{{ url_for('static', filename='images/' + movie.image) }}" alt="{{ movie.title }}" class="slide-img">
+                <h3>{{ movie.title }}</h3>
+                <p>{{ movie.description }}</p>
+                <p><strong>Language:</strong> {{ movie.language }}</p>
+                <p><strong>View Type:</strong> {{ movie.view_type }}</p>
+                <p><strong>Show Time:</strong> {{ movie.show_time }}</p>
+                <a href="{{ url_for('select_movie', movie_id=movie.id) }}" class="btn">Book Now</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
 </body>
 </html>
+
