@@ -15,6 +15,45 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Slideshow Container */
+.slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.slideshow-container img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    animation: fade 10s infinite;
+}
+
+/* Keyframes for Slideshow */
+@keyframes fade {
+    0% { opacity: 1; }
+    33% { opacity: 0; }
+    66% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+img:nth-child(1) {
+    animation-delay: 0s;
+}
+img:nth-child(2) {
+    animation-delay: 3.3s;
+}
+img:nth-child(3) {
+    animation-delay: 6.6s;
 }
 
 /* Header */
@@ -23,57 +62,49 @@ header h1 {
     color: #ff6200; /* Orange Color */
     margin-bottom: 40px;
     text-align: center;
+    z-index: 1;
 }
 
-/* Navigation Menu */
-nav.menu {
-    margin-bottom: 30px;
-    background-color: #222;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2);
+/* Login Form */
+.login-form {
+    background-color: rgba(255, 165, 0, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(99, 84, 57, 0.2);
     width: 100%;
-    max-width: 1000px;
+    max-width: 400px;
+    z-index: 1;
 }
 
-nav.menu ul {
-    list-style: none;
+.login-form form {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
 }
 
-nav.menu ul li {
-    display: inline;
-}
-
-nav.menu ul li a {
-    color: #ff6200;
-    text-decoration: none;
-    font-size: 1.2rem;
-    padding: 10px;
-    transition: color 0.3s ease;
-}
-
-nav.menu ul li a:hover {
-    color: #fff;
-}
-
-/* Booking Section */
-.booking-section {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.booking-section h2 {
-    font-size: 2.5rem;
-    color: #ff6200;
+.form-group {
     margin-bottom: 20px;
 }
 
-.booking-section .btn {
+label {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #222;
+    color: #fff;
+}
+
+input[type="submit"] {
     background-color: #ff6200;
     color: #000;
-    padding: 10px 20px;
+    padding: 10px;
     font-size: 1.2rem;
     border: none;
     border-radius: 5px;
@@ -81,8 +112,8 @@ nav.menu ul li a:hover {
     transition: background-color 0.3s ease;
 }
 
-.booking-section .btn:hover {
-    background-color: #ff9200;
+input[type="submit"]:hover {
+    background-color: #ff6200;
 }
 
 /* Movie Gallery */
@@ -103,7 +134,6 @@ nav.menu ul li a:hover {
     gap: 20px;
     width: 100%;
     max-width: 1000px;
-    margin: 0 auto;
 }
 
 .movie-item {
@@ -114,41 +144,11 @@ nav.menu ul li a:hover {
     font-size: 1.2rem;
     text-align: center;
     color: #ff6200;
+    cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .movie-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(255, 165, 0, 0.4);
-}
-
-.movie-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.movie-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.movie-item p {
-    margin-bottom: 10px;
-}
-
-.movie-item .btn {
-    background-color: #ff6200;
-    color: #000;
-    padding: 10px 15px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.movie-item .btn:hover {
-    background-color: #ff9200;
 }

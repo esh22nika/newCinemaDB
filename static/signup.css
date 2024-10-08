@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.content {
+    padding: 10px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box {
+    margin-bottom: 15px;
+}
+
+.input-box span {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-box input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.gender-details {
+    margin: 20px 0;
+}
+
+.gender-title {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.category {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.one {
+    background: #2196F3;
+}
+
+.two {
+    background: #E91E63;
+}
+
+.three {
+    background: #9C27B0;
+}
+
+.button {
+    text-align: center;
+}
+
+.button input {
+    background: #2196F3;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button input:hover {
+    background: #1E88E5;
+}

@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
+    <!-- Slideshow background -->
     <div class="slideshow-container">
         <div class="slide">
             <img src="https://wallpapercave.com/wp/wp1945939.jpg" alt="Slide 1" class="slide-img">
@@ -19,29 +20,33 @@
         </div>
     </div>
 
-    <header>
-        <h1>Welcome Back!</h1>
-    </header>
-    
-    <section class="login-form">
+    <!-- Circular animation -->
+    <div class="ring">
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+
+    <!-- Login form -->
+    <div class="login">
+        <h2>Login</h2>
         <form action="/login" method="POST">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+            <div class="inputBx">
+                <input type="text" name="username" id="username" placeholder="Username" required>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+            <div class="inputBx">
+                <input type="password" name="password" id="password" placeholder="Password" required>
             </div>
-            <div class="form-group">
+            <div class="inputBx">
                 <input type="submit" value="Login">
             </div>
         </form>
-    </section>
+        <div class="form-group">
+            <a href="/signup"><button class="sign-up-btn">Sign Up</button></a>
+        </div>
+    </div>
 
-    
-
-    <!-- Include the external JavaScript file -->
+    <!-- Slideshow script -->
     <script src="{{ url_for('static', filename='slideshow.js') }}"></script>
 </body>
 </html>

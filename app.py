@@ -36,7 +36,51 @@ def verifyAndRenderRespective():
     except Exception as e:
         print(e)
         return render_template('loginfail.html')
-    
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        user_type = request.form['user_type']
+        
+        # Redirect to respective signup forms based on the user type
+        if user_type == 'admin':
+            return redirect(url_for('signup_admin'))
+        elif user_type == 'employee':
+            return redirect(url_for('signup_employee'))
+        elif user_type == 'customer':
+            return redirect(url_for('signup_customer'))
+    return render_template('choose_signup.html')
+
+# Admin Signup
+@app.route('/signup/admin', methods=['GET', 'POST'])
+def signup_admin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Add logic to store admin details in database
+        # e.g., db.session.add(Admin(username=username, password=password))
+        return redirect(url_for('login'))
+    return render_template('signup_admin.html')
+
+# Employee Signup
+@app.route('/signup/employee', methods=['GET', 'POST'])
+def signup_employee():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Add logic to store employee details in database
+        return redirect(url_for('login'))
+    return render_template('signup_employee.html')
+
+# Customer Signup
+@app.route('/signup/customer', methods=['GET', 'POST'])
+def signup_customer():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Add logic to store customer details in database
+        return redirect(url_for('login'))
+    return render_template('signup_customer.html')
+   
 def runQuery(query, params=None):
     conn = db_conn()  # Assuming you have a function to establish a DB connection
     cur = conn.cursor()
