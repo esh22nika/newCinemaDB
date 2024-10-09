@@ -4,59 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Registration | CodingLab</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="title">Employee Registration</div>
         <div class="content">
-            <form action="#">
+            <form action="{{ url_for('signup_employee') }}" method="POST">
                 <div class="user-details">
                     <div class="input-box">
-                        <span class="details">Full Name</span>
-                        <input type="text" placeholder="Enter your name" required>
+                        <span class="details">Employee ID</span>
+                        <input type="text" name="emp_id" placeholder="Enter your Employee ID" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Username</span>
-                        <input type="text" placeholder="Enter your username" required>
+                        <span class="details">Full Name</span>
+                        <input type="text" name="first_name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Middle Name</span>
+                        <input type="text" name="middle_name" placeholder="Enter your middle name (optional)">
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Last Name</span>
+                        <input type="text" name="last_name" placeholder="Enter your last name" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Email</span>
-                        <input type="text" placeholder="Enter your email" required>
+                        <input type="email" name="email_id" placeholder="Enter your email" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Phone Number</span>
-                        <input type="text" placeholder="Enter your number" required>
+                        <input type="text" name="phone_no" placeholder="Enter your number" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Birth Date</span>
+                        <input type="date" name="birth_date" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Age</span>
+                        <input type="number" name="age" placeholder="Enter your age" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Salary</span>
+                        <input type="number" name="salary" placeholder="Enter your salary" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Department ID</span>
+                        <input type="text" name="dep_id" placeholder="Enter your Department ID" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Username</span>
+                        <input type="text" name="username" placeholder="Enter your username" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Password</span>
-                        <input type="password" placeholder="Enter your password" required>
+                        <input type="password" name="password" placeholder="Enter your password" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Confirm Password</span>
-                        <input type="password" placeholder="Confirm your password" required>
+                        <input type="password" name="confirm_password" placeholder="Confirm your password" required>
                     </div>
                 </div>
                 <div class="gender-details">
-                    <input type="radio" name="gender" id="dot-1" required>
-                    <input type="radio" name="gender" id="dot-2">
-                    <input type="radio" name="gender" id="dot-3">
                     <span class="gender-title">Gender</span>
                     <div class="category">
                         <label for="dot-1">
-                            <span class="dot one"></span>
-                            <span class="gender">Male</span>
+                            <input type="radio" id="dot-1" name="gender" value="M" required> Male
                         </label>
                         <label for="dot-2">
-                            <span class="dot two"></span>
-                            <span class="gender">Female</span>
+                            <input type="radio" id="dot-2" name="gender" value="F"> Female
                         </label>
                         <label for="dot-3">
-                            <span class="dot three"></span>
-                            <span class="gender">Prefer not to say</span>
+                            <input type="radio" id="dot-3" name="gender" value="Prefer not to say"> Prefer not to say
                         </label>
                     </div>
                 </div>
+                
                 <div class="button">
                     <input type="submit" value="Register">
                 </div>

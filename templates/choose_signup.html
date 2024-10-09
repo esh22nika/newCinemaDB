@@ -7,15 +7,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
 </head>
 <body>
+    <div class="ring">
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
     <div class="container">
         <div class="title">Choose Signup Type</div>
         <div class="content">
-            <div class="button-group">
-                <a href="signup_employee.html" class="button">Signup as Employee</a>
-                <a href="signup_admin.html" class="button">Signup as Admin</a>
-                <a href="signup_customer.html" class="button">Signup as Customer</a>
-            </div>
+            <!-- Correctly place the form tag to wrap the buttons -->
+            <form action="/signup" method="POST">
+                <div class="button-group">
+                    <button type="submit" name="user_type" value="employee" class="button">Signup as Employee</button>
+                    <button type="submit" name="user_type" value="admin" class="button">Signup as Admin</button>
+                    <button type="submit" name="user_type" value="customer" class="button">Signup as Customer</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
 </html>
+

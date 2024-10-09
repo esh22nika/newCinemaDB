@@ -14,6 +14,9 @@ def db_conn():
 @app.route('/')
 def renderLoginPage():
     return render_template('login.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')  # Make sure this template exists
 
 @app.route('/login', methods=['POST'])
 def verifyAndRenderRespective():
@@ -54,32 +57,106 @@ def signup():
 @app.route('/signup/admin', methods=['GET', 'POST'])
 def signup_admin():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        # Add logic to store admin details in database
-        # e.g., db.session.add(Admin(username=username, password=password))
-        return redirect(url_for('login'))
+        admin_id = request.form['admin_id']  # Get the admin ID from the form
+        username = request.form['username']  # Get the username from the form
+        pw = request.form['pw']   # Get the password from the form
+        
+        # Establish a connection to the database
+        conn = db_conn()
+        cur = conn.cursor()
+
+        # Insert admin details into the database
+        cur.execute('''INSERT INTO admin (admin_id, username, pw) 
+                       VALUES (%s, %s, %s)''', 
+                       (admin_id, username, pw))
+
+        # Commit the transaction and close the connection
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return redirect(url_for('login'))  # Redirect to the login page after successful registration
+
     return render_template('signup_admin.html')
 
-# Employee Signup
+
 @app.route('/signup/employee', methods=['GET', 'POST'])
 def signup_employee():
     if request.method == 'POST':
+        # Fetch form data
+        emp_id = request.form['emp_id']
+        salary = request.form['salary']
+        birth_date = request.form['birth_date']
+        age = request.form['age']
+        first_name = request.form['first_name']
+        middle_name = request.form['middle_name']
+        last_name = request.form['last_name']
+        gender = request.form['gender']
+        email_id = request.form['email_id']
+        phone_no = request.form['phone_no']
+        dep_id = request.form['dep_id']
         username = request.form['username']
         password = request.form['password']
-        # Add logic to store employee details in database
-        return redirect(url_for('login'))
+
+        # Insert employee details into the database
+        conn = db_conn()  # Establish a connection to the database
+        cur = conn.cursor()
+        
+        cur.execute('''INSERT INTO employee 
+                    (emp_id, salary, birth_date, age, first_name, middle_name, last_name, gender, email_id, phone_no, dep_id, username, password) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
+                    (emp_id, salary, birth_date, age, first_name, middle_name, last_name, gender, email_id, phone_no, dep_id, username, password))
+
+        # Commit the transaction and close the connection
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        # Redirect to the login page after successful signup
+        return redirect(url_for('login')) 
+
+    # Render the signup form for 'GET' requests
     return render_template('signup_employee.html')
+
 
 # Customer Signup
 @app.route('/signup/customer', methods=['GET', 'POST'])
 def signup_customer():
     if request.method == 'POST':
+        # Fetch form data
+        customer_id = request.form['customer_id']
+        cphone_no = request.form['cphone_no']
+        cemail_id = request.form['cemail_id']
+        cdob = request.form['cdob']
+        cage = request.form['cage']
+        cgender = request.form['cgender']
+        cfirst_name = request.form['cfirst_name']
+        cmiddle_name = request.form['cmiddle_name']
+        clast_name = request.form['clast_name']
+        caddress = request.form['caddress']
         username = request.form['username']
         password = request.form['password']
-        # Add logic to store customer details in database
-        return redirect(url_for('login'))
+
+        # Insert customer details into the database
+        conn = db_conn()  # Establish a connection to the database
+        cur = conn.cursor()
+        
+        cur.execute('''INSERT INTO customer 
+                    (customer_id, cphone_no, cemail_id, cdob, cage, cgender, cfirst_name, cmiddle_name, clast_name, caddress, username, password) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
+                    (customer_id, cphone_no, cemail_id, cdob, cage, cgender, cfirst_name, cmiddle_name, clast_name, caddress, username, password))
+
+        # Commit the transaction and close the connection
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        # Redirect to the login page after successful signup
+        return redirect(url_for('login')) 
+
+    # Render the signup form for 'GET' requests
     return render_template('signup_customer.html')
+
    
 def runQuery(query, params=None):
     conn = db_conn()  # Assuming you have a function to establish a DB connection
