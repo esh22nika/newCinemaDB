@@ -31,7 +31,7 @@ def verifyAndRenderRespective():
             return render_template('index.html') 
 
         elif username == 'customer' and password == 'customer':  
-            return render_template('customer.html')  
+            return redirect(url_for('customer_dashboard')) 
 
         else:
             return render_template('loginfail.html')
@@ -399,102 +399,112 @@ def add_movie():
 def customer_dashboard():
     return render_template('customer.html')
 
-# Customer book ticket
-# Customer selects movie, language, view type, and show time
-@app.route('/select_movie', methods=['GET', 'POST'])
-def select_movie():
+
+# Route for the customer home page with options: Book Movie and View Transactions
+
+
+# Route for movie booking (show collection of movie posters)
+@app.route('/book_movie')
+def book_movie():
     conn = db_conn()
     cur = conn.cursor()
+    # Fetch available movies from database
+    cur.execute("SELECT movies_id, movie_name, poster_url FROM movies")  # Assuming 'movies' table has this data
+    rows = cur.fetchall()
+    movies = [{'movies_id': row[0], 'movie_name': row[1], 'poster_url': row[2]} for row in rows]
+    cur.close()
+    conn.close()
+    print(movies)  # Print the list of movies to verify URLs
+    return render_template('select_movie.html', movies=movies)  # Display the movie posters
 
+# Route for selecting movie details (e.g., language, showtime, etc.)
+@app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])
+def movie_details(movie_id):
     if request.method == 'POST':
-        customer_id = request.form['customer_id']
-        movie_id = request.form['movie_id']
-        movie_lang = request.form['movie_lang']
-        view_type = request.form['view_type']
-        show_time = request.form['show_time']
-        
-        # Save the selections to session for use in the next step
+        customer_id = session.get('customer_id', random.randint(1000, 9999))  # Generate or retrieve customer_id
         session['customer_id'] = customer_id
-        session['movie_id'] = movie_id
-        session['movie_lang'] = movie_lang
-        session['view_type'] = view_type
-        session['show_time'] = show_time
 
-        return redirect(url_for('select_seats'))
-    
-    cur.execute('SELECT * FROM movies')  # Get list of movies
-    movies = cur.fetchall()
+        language = request.form['language']
+        showtime = request.form['showtime']
+        view_type = request.form['view_type']
 
-    cur.close()
-    conn.close()
-    
-    return render_template('select_movie.html', movies=movies)
-# Customer selects seats
-@app.route('/select_seats', methods=['GET', 'POST'])
-def select_seats():
-    conn = db_conn()
-    cur = conn.cursor()
-
-    if request.method == 'POST':
-        seat_id = request.form['seat_id']
-        no_of_seats = request.form['no_of_seats']
-
-        # Save seat selection to session for later use
-        session['seat_id'] = seat_id
-        session['no_of_seats'] = no_of_seats
-
-        return redirect(url_for('make_payment'))
-    
-    # Get available seats for the selected show
-    cur.execute('SELECT * FROM seats WHERE available = TRUE')
-    available_seats = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return render_template('select_seats.html', seats=available_seats)
-# Customer makes payment and books ticket
-@app.route('/make_payment', methods=['GET', 'POST'])
-def make_payment():
-    conn = db_conn()
-    cur = conn.cursor()
-
-    if request.method == 'POST':
-        payment_amount = request.form['payment_amount']
-        payment_method = request.form['payment_method']
-
-        # Retrieve the data from session
-        customer_id = session.get('customer_id')
-        movies_id = session.get('movies_id')
-        movie_lang = session.get('movie_lang')
-        view_type = session.get('view_type')
-        show_time = session.get('show_time')
-        seat_id = session.get('seat_id')
-        no_of_seats = session.get('no_of_seats')
-
-        # Generate ticket ID
-        cur.execute('''INSERT INTO bookingInfo (customer_id, movies_id, movie_lang, view_type, show_time, seat_id, no_of_seats) 
-                       VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING ticket_id''',
-                    (customer_id, movies_id, movie_lang, view_type, show_time, seat_id, no_of_seats))
-        ticket_id = cur.fetchone()[0]
-
-        # Update seat availability
-        cur.execute('UPDATE seats SET available = FALSE WHERE seat_id = %s', (seat_id,))
-
-        # Insert payment details into the payment table
-        cur.execute('''INSERT INTO paymentInfo (customer_id, ticket_id, amount, payment_method, payment_date) 
-                       VALUES (%s, %s, %s, %s, NOW())''', (customer_id, ticket_id, payment_amount, payment_method))
-
+        conn = db_conn()
+        cur = conn.cursor()
+        # Insert booking info into database
+        cur.execute('''INSERT INTO bookingInfo (customer_id, movie_id, language, showtime, view_type) 
+                       VALUES (%s, %s, %s, %s, %s)''', 
+                       (customer_id, movie_id, language, showtime, view_type))
         conn.commit()
         cur.close()
         conn.close()
 
-        # Redirect to customer dashboard or display the ticket confirmation
-        return redirect(url_for('customer_dashboard'))
+        return redirect(url_for('select_seats', movie_id=movie_id))
 
-    return render_template('make_payment.html')
+    return render_template('movie_details.html')  # A form with language, showtime, view type
 
+# Route for selecting seats (similar to BookMyShow UI)
+@app.route('/movie/<int:movie_id>/seats', methods=['GET', 'POST'])
+def select_seats(movie_id):
+    if request.method == 'POST':
+        seats = request.form.getlist('seats')  # List of selected seat IDs
+        num_seats = len(seats)
+        customer_id = session['customer_id']
 
+        conn = db_conn()
+        cur = conn.cursor()
+        # Insert seat booking into seatBooking table
+        for seat_id in seats:
+            cur.execute('''INSERT INTO seatBooking (customer_id, movie_id, seat_id, num_seats) 
+                           VALUES (%s, %s, %s, %s)''', 
+                           (customer_id, movie_id, seat_id, num_seats))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return redirect(url_for('make_payment', movie_id=movie_id, num_seats=num_seats))
+
+    return render_template('select_seats.html')  # Seat selection graphic (similar to BookMyShow)
+
+# Route for payment (UI where user selects payment mode and enters amount)
+@app.route('/movie/<int:movie_id>/payment', methods=['GET', 'POST'])
+def make_payment(movie_id):
+    num_seats = request.args.get('num_seats')
+
+    if request.method == 'POST':
+        payment_mode = request.form['payment_mode']
+        amount = request.form['amount']
+        customer_id = session['customer_id']
+
+        conn = db_conn()
+        cur = conn.cursor()
+        # Insert payment info into payment table
+        cur.execute('''INSERT INTO payment (customer_id, movie_id, num_seats, payment_mode, amount) 
+                       VALUES (%s, %s, %s, %s, %s)''', 
+                       (customer_id, movie_id, num_seats, payment_mode, amount))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        flash("Transaction Complete!")
+        return redirect(url_for('book_movie'))  # Redirect back to movie selection page
+
+    return render_template('make_payment.html')  # Payment form (mode of payment, amount)
+
+# Route to view the most recent transaction (bill format)
+@app.route('/view_transaction')
+def view_transaction():
+    customer_id = session['customer_id']
+
+    conn = db_conn()
+    cur = conn.cursor()
+    # Fetch the most recent transaction
+    cur.execute('''SELECT * FROM payment WHERE customer_id = %s ORDER BY transaction_time DESC LIMIT 1''', 
+                (customer_id,))
+    transaction = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    return render_template('view_transaction.html', transaction=transaction)  # Display the transaction in bill format
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True)

@@ -3,49 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Cinema Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #FF4500; /* Orange */
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: white;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        nav a:hover {
+            border-color: #FF4500; /* Orange */
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .movie-poster {
+            display: inline-block;
+            margin: 10px;
+            width: 200px;
+            height: 300px;
+            border: 3px solid #FF4500; /* Orange */
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        footer {
+            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #333;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
     <header>
-        <h1>Customer Dashboard</h1>
+        <h1>Cinema Booking System</h1>
+        <nav>
+            <a href="{{ url_for('customer_dashboard') }}">Home</a>
+            <a href="{{ url_for('book_movie') }}">Book Movie</a>
+            <a href="#">View Transactions</a>
+        </nav>
     </header>
 
-    <!-- Navigation Menu -->
-    <nav class="menu">
-        <ul>
-            <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
-            <li><a href="{{ url_for('select_movie') }}">Book a Ticket</a></li>
-            <li><a href="{{ url_for('select_seats') }}">Select Seats</a></li>
-            <li><a href="{{ url_for('make_payment') }}">Make Payment</a></li>
-        </ul>
-    </nav>
-
-    <!-- Book a Ticket Section -->
-    <section class="booking-section">
-        <h2>Book a Ticket</h2>
-        <p><a href="{{ url_for('select_movie') }}" class="btn">Select a Movie</a></p>
-    </section>
-
-    <!-- Movie Gallery Section -->
-    <section class="gallery">
-        <h2>New Releases</h2>
-        <div class="movie-gallery">
+    <div class="container">
+        <h2>Available Movies</h2>
+        <div class="movies">
             {% for movie in movies %}
-            <div class="movie-item">
-                <img src="{{ url_for('static', filename='images/' + movie.image) }}" alt="{{ movie.title }}" class="slide-img">
-                <h3>{{ movie.title }}</h3>
-                <p>{{ movie.description }}</p>
-                <p><strong>Language:</strong> {{ movie.language }}</p>
-                <p><strong>View Type:</strong> {{ movie.view_type }}</p>
-                <p><strong>Show Time:</strong> {{ movie.show_time }}</p>
-                <a href="{{ url_for('select_movie', movie_id=movie.id) }}" class="btn">Book Now</a>
+            <div class="movie-poster">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.movie_name }}">
+                <div class="movie-name">{{ movie.movie_name }}</div>
             </div>
             {% endfor %}
         </div>
-    </section>
+    </div>
 
+    <footer>
+        <p>&copy; 2024 Cinema Booking System</p>
+    </footer>
 </body>
 </html>
-
