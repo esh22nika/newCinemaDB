@@ -5,70 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Details</title>
     <style>
+        /* General page styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #121212;
+            color: white;
         }
+
+        /* Header */
         header {
-            background-color: #333;
+            background-color: #ff6f00;
             color: white;
             padding: 1rem;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+
         nav a {
             color: white;
             margin: 0 1rem;
             text-decoration: none;
+            font-weight: bold;
         }
+
+        /* Main container for form */
         .container {
             padding: 2rem;
             max-width: 600px;
-            margin: auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            background-color: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            max-height: 85vh;
         }
+
         h2 {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
+            color: #ff6f00;
         }
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
+            color: #ffab40;
         }
+
         select, input[type="text"] {
             width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 0.75rem;
+            border: 2px solid #ff6f00;
+            background-color: #2c2c2c;
+            color: white;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
         }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #ffa726;
+        }
+
+        /* Submit button */
         input[type="submit"] {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border: none;
-            border-radius: 4px;
-            background-color: #333;
+            border-radius: 6px;
+            background-color: #ff6f00;
             color: white;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+
         input[type="submit"]:hover {
-            background-color: #555;
+            background-color: #ffa726;
         }
+
+        /* Footer */
         footer {
-            background-color: #333;
+            background-color: #1c1c1c;
             color: white;
             text-align: center;
             padding: 1rem;
-            position: fixed;
-            bottom: 0;
+            position: relative;
+            margin-top: 2rem;
             width: 100%;
+        }
+
+        /* Ensure the page can scroll if needed */
+        html, body {
+            height: 100%;
         }
     </style>
 </head>
@@ -78,16 +117,20 @@
         <nav>
             <a href="{{ url_for('customer_dashboard') }}">Home</a>
             <a href="{{ url_for('book_movie') }}">Book Movie</a>
-            <a href="#">View Transactions</a>
+            <a href="{{ url_for('view_transaction') }}">View Transactions</a>
         </nav>
     </header>
 
     <div class="container">
         <h2>Book Your Movie</h2>
-        <form method="POST" action="{{ url_for('movie_details', movie_id=movie_id) }}">
+        <form method="POST" action="{{ url_for('movie_details') }}"> <!-- No parameters -->
             <div class="form-group">
-                <label for="language">Language</label>
-                <select id="language" name="language" required>
+                <label for="movies_id">Movie ID</label>
+                <input type="text" id="movies_id" name="movies_id" placeholder="Enter Movie ID" required>
+            </div>
+            <div class="form-group">
+                <label for="movie_lang">Language</label>
+                <select id="movie_lang" name="movie_lang" required>
                     <option value="" disabled selected>Select Language</option>
                     <option value="English">English</option>
                     <option value="Hindi">Hindi</option>
@@ -97,8 +140,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="showtime">Showtime</label>
-                <input type="text" id="showtime" name="showtime" placeholder="Enter Showtime" required>
+                <label for="show_time">Showtime</label>
+                <input type="text" id="show_time" name="show_time" placeholder="Enter Showtime" required>
             </div>
             <div class="form-group">
                 <label for="view_type">View Type</label>

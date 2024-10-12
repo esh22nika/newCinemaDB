@@ -4,39 +4,246 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Seats</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1c1c1c;
+            color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #f97300;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .screen {
+            width: 80%;
+            background-color: #444;
+            height: 50px;
+            margin: 20px 0;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+        .seats {
+            display: grid;
+            grid-template-columns: repeat(10, 50px); /* Adjust the number of columns as needed */
+            grid-gap: 12px;
+            margin-bottom: 20px;
+        }
+        .seat {
+            width: 50px;
+            height: 50px;
+            background-color: #444;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .seat.selected {
+            background-color: #f97300;
+            transform: scale(1.1);
+        }
+        .seat.occupied {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        .seat:hover:not(.occupied):not(.selected) {
+            background-color: #f97300;
+        }
+        .legend {
+            display: flex;
+            justify-content: space-around;
+            width: 50%;
+            margin-top: 20px;
+        }
+        .legend div {
+            display: flex;
+            align-items: center;
+        }
+        .legend div span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        .legend .available span {
+            background-color: #444;
+        }
+        .legend .selected span {
+            background-color: #f97300;
+        }
+        .legend .occupied span {
+            background-color: #666;
+        }
+        button {
+            padding: 12px 30px;
+            background-color: #f97300;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #fa8a33;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #selected-seats {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #f8f8f8;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Select Seats</h1>
-    </header>
+<div class="container">
+    <h1>Select Your Seats</h1>
 
-    <section>
-        <form action="{{ url_for('select_seats') }}" method="POST">
-            <table>
-                <tr>
-                    <td><label for="seat_id">Select Seat:</label></td>
-                    <td>
-                        <select id="seat_id" name="seat_id" required>
-                            {% for seat in seats %}
-                                <option value="{{ seat[0] }}">Seat {{ seat[1] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="no_of_seats">Number of Seats:</label></td>
-                    <td><input type="number" id="no_of_seats" name="no_of_seats" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" value="Next: Make Payment">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </section>
+    <!-- Theater screen -->
+    <div class="screen">SCREEN</div>
+
+    <!-- Seats grid -->
+    <div class="seats">
+        <!-- Rows A to E, adjust as needed -->
+        <div class="seat" data-seat-id="A1">A1</div>
+        <div class="seat" data-seat-id="A2">A2</div>
+        <div class="seat" data-seat-id="A3">A3</div>
+        <div class="seat" data-seat-id="A4">A4</div>
+        <div class="seat" data-seat-id="A5">A5</div>
+        <div class="seat" data-seat-id="A6">A6</div>
+        <div class="seat" data-seat-id="A7">A7</div>
+        <div class="seat" data-seat-id="A8">A8</div>
+        <div class="seat" data-seat-id="A9">A9</div>
+        <div class="seat" data-seat-id="A10">A10</div>
+
+        <div class="seat" data-seat-id="B1">B1</div>
+        <div class="seat" data-seat-id="B2">B2</div>
+        <div class="seat" data-seat-id="B3">B3</div>
+        <div class="seat" data-seat-id="B4">B4</div>
+        <div class="seat" data-seat-id="B5">B5</div>
+        <div class="seat" data-seat-id="B6">B6</div>
+        <div class="seat" data-seat-id="B7">B7</div>
+        <div class="seat" data-seat-id="B8">B8</div>
+        <div class="seat" data-seat-id="B9">B9</div>
+        <div class="seat" data-seat-id="B10">B10</div>
+
+        <div class="seat" data-seat-id="C1">C1</div>
+        <div class="seat" data-seat-id="C2">C2</div>
+        <div class="seat" data-seat-id="C3">C3</div>
+        <div class="seat" data-seat-id="C4">C4</div>
+        <div class="seat" data-seat-id="C5">C5</div>
+        <div class="seat" data-seat-id="C6">C6</div>
+        <div class="seat" data-seat-id="C7">C7</div>
+        <div class="seat" data-seat-id="C8">C8</div>
+        <div class="seat" data-seat-id="C9">C9</div>
+        <div class="seat" data-seat-id="C10">C10</div>
+
+        <div class="seat" data-seat-id="D1">D1</div>
+        <div class="seat" data-seat-id="D2">D2</div>
+        <div class="seat" data-seat-id="D3">D3</div>
+        <div class="seat" data-seat-id="D4">D4</div>
+        <div class="seat" data-seat-id="D5">D5</div>
+        <div class="seat" data-seat-id="D6">D6</div>
+        <div class="seat" data-seat-id="D7">D7</div>
+        <div class="seat" data-seat-id="D8">D8</div>
+        <div class="seat" data-seat-id="D9">D9</div>
+        <div class="seat" data-seat-id="D10">D10</div>
+
+        <div class="seat" data-seat-id="E1">E1</div>
+        <div class="seat" data-seat-id="E2">E2</div>
+        <div class="seat" data-seat-id="E3">E3</div>
+        <div class="seat" data-seat-id="E4">E4</div>
+        <div class="seat" data-seat-id="E5">E5</div>
+        <div class="seat" data-seat-id="E6">E6</div>
+        <div class="seat" data-seat-id="E7">E7</div>
+        <div class="seat" data-seat-id="E8">E8</div>
+        <div class="seat" data-seat-id="E9">E9</div>
+        <div class="seat" data-seat-id="E10">E10</div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+        <div class="available">
+            <span></span> Available
+        </div>
+        <div class="selected">
+            <span></span> Selected
+        </div>
+        <div class="occupied">
+            <span></span> Occupied
+        </div>
+    </div>
+
+    <!-- Selected seat count and button -->
+    <div id="selected-seats">
+        <p>Selected Seats: <span id="seat-count">0</span></p>
+    </div>
+    <button id="book-button">Book Selected Seats</button>
+
+</div>
+
+<script>
+    // Get elements
+    const seats = document.querySelectorAll('.seat:not(.occupied)');
+    const seatCount = document.getElementById('seat-count');
+    const bookButton = document.getElementById('book-button');
+
+    let selectedSeats = [];
+
+    // Event listeners for seat selection
+    seats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('selected');
+
+            updateSelectedSeats();
+        });
+    });
+
+    // Function to update selected seats
+    function updateSelectedSeats() {
+        selectedSeats = [...document.querySelectorAll('.seat.selected')];
+
+        const seatIds = selectedSeats.map(seat => seat.dataset.seatId);
+        seatCount.innerText = seatIds.length;
+    }
+
+    // Event listener for booking button
+    bookButton.addEventListener('click', () => {
+        if (selectedSeats.length > 0) {
+            alert(`You have booked: ${selectedSeats.map(seat => seat.dataset.seatId).join(', ')}`);
+            selectedSeats.forEach(seat => {
+                seat.classList.remove('selected');
+                seat.classList.add('occupied');
+            });
+            updateSelectedSeats();
+        } else {
+            alert('Please select at least one seat.');
+        }
+    });
+</script>
 
 </body>
 </html>

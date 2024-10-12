@@ -94,7 +94,7 @@
         <nav>
             <a href="{{ url_for('customer_dashboard') }}">Home</a>
             <a href="{{ url_for('book_movie') }}">Book Movie</a>
-            <a href="#">View Transactions</a>
+            <a href="{{ url_for('view_transaction') }}">View Transactions</a> <!-- Updated link -->
         </nav>
     </header>
 
@@ -103,10 +103,13 @@
         <div class="movies">
             {% for movie in movies %}
             <div class="movie-poster">
-                <a href="{{ url_for('select_seats', movie_id=movie.movies_id) }}">
-                    <img src="{{ movie.poster_url }}" alt="{{ movie.movie_name }}">
-                    <div class="movie-name">{{ movie.movie_name }}</div>
-                </a>
+                <form action="{{ url_for('movie_details') }}" method="post"> <!-- Use form to submit selection -->
+                    <input type="hidden" name="movies_id" value="{{ movie.movies_id }}"> <!-- Hidden input for movie_id -->
+                    <button type="submit">
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.movie_name }}">
+                        <div class="movie-name">{{ movie.movie_name }}</div>
+                    </button>
+                </form>
             </div>
             {% endfor %}
         </div>

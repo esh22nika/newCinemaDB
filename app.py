@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for,session
 import psycopg2
 import secrets
-
+import random
 app = Flask(__name__)
 
 app.secret_key =secrets.token_hex(16)
@@ -354,10 +354,12 @@ def sell_ticket():
     shows = request.form['shows']
     movie_name = request.form['movie_name']
     booking_date = request.form['booking_date']
-    customer = request.form['booking_date']
+    customer_id = request.form['customer_id']
+    movies_id = request.form['movies_id']
+
     
     cur.execute('''INSERT INTO tickets (ticket_id, price, discount, shows,movie_name,booking_date,customer_id, movies_id) 
-                   VALUES ( %s, %s, %s, %s)''', 
+                   VALUES ( %s, %s, %s, %s ,%s, %s, %s, %s)''', 
                 (ticket_id, price, discount, shows,movie_name,booking_date,customer_id, movies_id ))
     conn.commit()
     conn.close()
@@ -377,14 +379,14 @@ def add_movie():
     
         movie_lang = request.form['movie_lang']
         view_type = request.form['view_type']
-
+        poster_url = request.form['poster_url']
 
         # Insert movie into the database
         conn = db_conn()
         cur = conn.cursor()
-        cur.execute('''INSERT INTO movies (movies_id,movie_name,  release_date, genre, roles,movie_lang,view_type) 
-                       VALUES (%s, %s, %s, %s, %s, %s, %s)''',
-                    (movies_id, movie_name,  release_date, genre, roles,movie_lang,view_type))
+        cur.execute('''INSERT INTO movies (movies_id,movie_name,  release_date, genre, roles,movie_lang,view_type,poster_url) 
+                       VALUES (%s, %s, %s, %s, %s, %s, %s,%s)''',
+                    (movies_id, movie_name,  release_date, genre, roles,movie_lang,view_type,poster_url))
         conn.commit()
         cur.close()
         conn.close()
@@ -395,12 +397,19 @@ def add_movie():
 
 
 # ------------- CUSTOMER FUNCTIONALITIES -------------
+
+
+# Route for the customer home page with options: Book Movie and View Transactions
+
+
 @app.route('/customer_dashboard')
 def customer_dashboard():
     return render_template('customer.html')
 
 
 # Route for the customer home page with options: Book Movie and View Transactions
+
+
 
 
 # Route for movie booking (show collection of movie posters)
@@ -418,33 +427,63 @@ def book_movie():
     return render_template('select_movie.html', movies=movies)  # Display the movie posters
 
 # Route for selecting movie details (e.g., language, showtime, etc.)
-@app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])
-def movie_details(movie_id):
+@app.route('/movie_details', methods=['GET', 'POST'])
+
+def movie_details():
     if request.method == 'POST':
-        customer_id = session.get('customer_id', random.randint(1000, 9999))  # Generate or retrieve customer_id
-        session['customer_id'] = customer_id
+        # Retrieve or generate customer_id
+        cust_id = session.get('cust_id')
 
-        language = request.form['language']
-        showtime = request.form['showtime']
-        view_type = request.form['view_type']
+        if not cust_id:  # If no customer_id is stored in the session
+            cust_id = random.randint(1000, 9999)  # Generate a random customer_id
+            session['customer_id'] = cust_id
 
+            # Insert new customer into the `customer` table
+            conn = db_conn()
+            cur = conn.cursor()
+
+            try:
+                cur.execute('''INSERT INTO customer (cust_id) VALUES (%s)''', (cust_id,))
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                print(f"Error inserting customer: {e}")
+            finally:
+                cur.close()
+                conn.close()
+
+        # Retrieve booking details from form
+        movies_id = request.form.get('movies_id')  # Use `get()` to avoid KeyErrors
+        movie_lang = request.form.get('movie_lang')
+        show_time = request.form.get('show_time')
+        view_type = request.form.get('view_type')
+       
+        # Insert booking info into the `bookingInfo` table
         conn = db_conn()
         cur = conn.cursor()
-        # Insert booking info into database
-        cur.execute('''INSERT INTO bookingInfo (customer_id, movie_id, language, showtime, view_type) 
-                       VALUES (%s, %s, %s, %s, %s)''', 
-                       (customer_id, movie_id, language, showtime, view_type))
-        conn.commit()
-        cur.close()
-        conn.close()
 
-        return redirect(url_for('select_seats', movie_id=movie_id))
+        try:
+            cur.execute('''INSERT INTO bookingInfo (cust_id, movies_id, movie_lang, show_time, view_type) 
+                           VALUES (%s, %s,%s, %s, %s)''', 
+                        (cust_id,movies_id, movie_lang, show_time, view_type))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            print(f"Error inserting booking info: {e}")
+        finally:
+            cur.close()
+            conn.close()
+        
+        if request.method == 'POST':
+    # Process the form and save booking info
+            return redirect(url_for('select_seats'))
 
-    return render_template('movie_details.html')  # A form with language, showtime, view type
+    return render_template('movie_details.html')
+
 
 # Route for selecting seats (similar to BookMyShow UI)
-@app.route('/movie/<int:movie_id>/seats', methods=['GET', 'POST'])
-def select_seats(movie_id):
+@app.route('/select_seats', methods=['GET', 'POST'])
+def select_seats():
     if request.method == 'POST':
         seats = request.form.getlist('seats')  # List of selected seat IDs
         num_seats = len(seats)
@@ -454,22 +493,20 @@ def select_seats(movie_id):
         cur = conn.cursor()
         # Insert seat booking into seatBooking table
         for seat_id in seats:
-            cur.execute('''INSERT INTO seatBooking (customer_id, movie_id, seat_id, num_seats) 
+            cur.execute('''INSERT INTO seatBooking (customer_id, movies_id, seat_id, num_seats) 
                            VALUES (%s, %s, %s, %s)''', 
-                           (customer_id, movie_id, seat_id, num_seats))
+                           (customer_id, 1, seat_id, num_seats))  # Use a default movie_id (e.g., 1)
         conn.commit()
         cur.close()
         conn.close()
 
-        return redirect(url_for('make_payment', movie_id=movie_id, num_seats=num_seats))
+        return redirect('/make_payment')  # Redirect to payment without passing movie_id
 
     return render_template('select_seats.html')  # Seat selection graphic (similar to BookMyShow)
 
 # Route for payment (UI where user selects payment mode and enters amount)
-@app.route('/movie/<int:movie_id>/payment', methods=['GET', 'POST'])
-def make_payment(movie_id):
-    num_seats = request.args.get('num_seats')
-
+@app.route('/make_payment', methods=['GET', 'POST'])
+def make_payment():
     if request.method == 'POST':
         payment_mode = request.form['payment_mode']
         amount = request.form['amount']
@@ -478,15 +515,15 @@ def make_payment(movie_id):
         conn = db_conn()
         cur = conn.cursor()
         # Insert payment info into payment table
-        cur.execute('''INSERT INTO payment (customer_id, movie_id, num_seats, payment_mode, amount) 
+        cur.execute('''INSERT INTO payment (customer_id, movies_id, num_seats, payment_mode, amount) 
                        VALUES (%s, %s, %s, %s, %s)''', 
-                       (customer_id, movie_id, num_seats, payment_mode, amount))
+                       (customer_id, 1, 1, payment_mode, amount))  # Use a default movie_id and num_seats
         conn.commit()
         cur.close()
         conn.close()
 
         flash("Transaction Complete!")
-        return redirect(url_for('book_movie'))  # Redirect back to movie selection page
+        return redirect('/book_movie')  # Redirect back to movie selection page
 
     return render_template('make_payment.html')  # Payment form (mode of payment, amount)
 
