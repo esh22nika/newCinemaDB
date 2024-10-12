@@ -3,6 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for,session
 import psycopg2
 import secrets
 import random
+import logging
+from flask import flash
+logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
 app.secret_key =secrets.token_hex(16)
@@ -174,15 +177,47 @@ def runQuery(query, params=None):
 
 @app.route('/admin')
 def index():
-    conn = db_conn()
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM employee ORDER BY emp_id;')
-    data = cur.fetchall()
-    cur.close()
+    conn = None
+    cur = None
+    try:
+        logging.debug("Attempting to connect to the database")
+        conn = db_conn()
+        if not conn:
+            logging.error("Failed to establish database connection")
+            return render_template('index.html', data=[], error="Database connection failed")
+        
+        logging.debug("Creating cursor")
+        cur = conn.cursor()
+        logging.debug("Executing SQL query")
+        cur.execute('SELECT * FROM employee;')
+        logging.debug("Fetching data")
+        data = cur.fetchall()
+        logging.debug(f"Fetched {len(data)} rows")
+        
+        if not data:
+            logging.warning("No data retrieved from the database")
+        return render_template('index.html', data=data)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return render_template('index.html', data=[], error="Failed to fetch employee data")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+@app.route('/employee_list')
+def view_employees():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)  # To access columns by name
+    cursor.execute('SELECT * FROM employees')  # Query to get all employee data
+    employees = cursor.fetchall()  # Fetch all results
+    cursor.close()
     conn.close()
-    print("Fetched data:", data)
-    return render_template('index.html', data=data)
 
+    return render_template('employee_list.html', employees=employees)
+@app.route('/back_to_dashboard')
+def back_to_dashboard():
+    return redirect(url_for('index'))  
 # Create Employee
 @app.route('/create', methods=['POST'])
 def create():
@@ -211,16 +246,18 @@ def create():
 # Update Employee
 @app.route('/update', methods=['POST'])
 def update_employee():
+    conn = db_conn()
+    cur = conn.cursor()
     emp_id = request.form['emp_id']
     update_field = request.form['update_field']
     new_value = request.form['new_value']
     
     # Create SQL query to update the specific field
     query = f"UPDATE employees SET {update_field} = %s WHERE emp_id = %s"
-    cursor.execute(query, (new_value, emp_id))
+    cur.execute(query, (new_value, emp_id))
     conn.commit()
 
-    return redirect(url_for('admin_view'))  # Adjust this to your page route
+    return redirect(url_for('index'))  # Adjust this to your page route
 
 
 
