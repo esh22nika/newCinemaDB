@@ -1,11 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Movie</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Add New Movie</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.redd.it%2F8sqkca4mtvl21.jpg&f=1&nofb=1&ipt=deb3f7f17aad711fd88927aeb40c8aba1ef3256c29e0d48ec42c9ff5620ac4de&ipo=images');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+            color: #f0f0f0; /* Light text color for readability */
+            font-family: 'Poppins', sans-serif; /* Apply the Poppins font */
+            position: relative;
+            z-index: 1;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: rgb(255, 98, 0);
+            border-bottom: 1px solid #ff6600;
+        }
+        h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            color: #f0f0f0;
+        }
+        .btn {
+            background-color: rgb(255, 98, 0);
+            border: none;
+            color: #121212;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background-color: #ff6a00;
+            color: white;
+        }
+        .form-control {
+            background-color: #1e1e1e;
+            border: 1px solid #ff6600;
+            color: #f0f0f0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        table {
+            width: 100%;
+        }
+        td {
+            padding: 10px;
+        }
+        td:first-child {
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,49 +74,55 @@
         <h1>Add New Movie</h1>
     </header>
 
-    <section>
-        <form action="{{ url_for('add_movie') }}" method="POST">
-            <table>
-                <tr>
-                    <td><label for="movies_id">Movie ID:</label></td>
-                    <td><input type="text" id="movies_id" name="movies_id" required></td>
-                </tr>
-                <tr>
-                    <td><label for="movie_name">Movie Name:</label></td>
-                    <td><input type="text" id="movie_name" name="movie_name" required></td>
-                </tr>
-                <tr>
-                    <td><label for="release_date">Release Date:</label></td>
-                    <td><input type="date" id="release_date" name="release_date" required></td>
-                </tr>
-                <tr>
-                    <td><label for="genre">Genre:</label></td>
-                    <td><input type="text" id="genre" name="genre" required></td>
-                </tr>
-                <tr>
-                    <td><label for="roles">Roles:</label></td>
-                    <td><input type="text" id="roles" name="roles" required></td>
-                </tr>
-                <tr>
-                    <td><label for="movie_lang">Language:</label></td>
-                    <td><input type="text" id="movie_lang" name="movie_lang" required></td>
-                </tr>
-                <tr>
-                    <td><label for="view_type">View Type:</label></td>
-                    <td><input type="text" id="view_type" name="view_type" required></td>
-                </tr>
-                <tr>
-                    <td><label for="poster_url">Poster URL:</label></td>
-                    <td><input type="text" id="poster_url" name="poster_url" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" value="Add Movie">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </section>
+    <div class="container">
+        <section>
+            <form action="{{ url_for('add_movie') }}" method="POST">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><label for="movies_id" class="form-label">Movie ID:</label></td>
+                        <td><input type="text" id="movies_id" name="movies_id" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie_name" class="form-label">Movie Name:</label></td>
+                        <td><input type="text" id="movie_name" name="movie_name" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="release_date" class="form-label">Release Date:</label></td>
+                        <td><input type="date" id="release_date" name="release_date" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="genre" class="form-label">Genre:</label></td>
+                        <td><input type="text" id="genre" name="genre" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="roles" class="form-label">Roles:</label></td>
+                        <td><input type="text" id="roles" name="roles" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie_lang" class="form-label">Language:</label></td>
+                        <td><input type="text" id="movie_lang" name="movie_lang" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="view_type" class="form-label">View Type:</label></td>
+                        <td><input type="text" id="view_type" name="view_type" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="poster_url" class="form-label">Poster URL:</label></td>
+                        <td><input type="text" id="poster_url" name="poster_url" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <input type="submit" value="Add Movie" class="btn btn-lg w-100">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+

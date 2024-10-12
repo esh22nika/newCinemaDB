@@ -180,6 +180,7 @@ def index():
     data = cur.fetchall()
     cur.close()
     conn.close()
+    print("Fetched data:", data)
     return render_template('index.html', data=data)
 
 # Create Employee
@@ -209,73 +210,18 @@ def create():
 
 # Update Employee
 @app.route('/update', methods=['POST'])
-def update():
-    conn = db_conn()
-    cur = conn.cursor()
-
+def update_employee():
     emp_id = request.form['emp_id']
+    update_field = request.form['update_field']
+    new_value = request.form['new_value']
+    
+    # Create SQL query to update the specific field
+    query = f"UPDATE employees SET {update_field} = %s WHERE emp_id = %s"
+    cursor.execute(query, (new_value, emp_id))
+    conn.commit()
 
-    # List of columns and values to update
-    columns = []
-    values = []
+    return redirect(url_for('admin_view'))  # Adjust this to your page route
 
-    # Only update the fields that are provided (non-empty)
-    if request.form['salary']:
-        columns.append('salary = %s')
-        values.append(request.form['salary'])
-
-    if request.form['birth_date']:
-        columns.append('birth_date = %s')
-        values.append(request.form['birth_date'])
-
-    if request.form['age']:
-        columns.append('age = %s')
-        values.append(request.form['age'])
-
-    if request.form['first_name']:
-        columns.append('first_name = %s')
-        values.append(request.form['first_name'])
-
-    if request.form['middle_name']:
-        columns.append('middle_name = %s')
-        values.append(request.form['middle_name'])
-
-    if request.form['last_name']:
-        columns.append('last_name = %s')
-        values.append(request.form['last_name'])
-
-    if request.form['gender']:
-        columns.append('gender = %s')
-        values.append(request.form['gender'])
-
-    if request.form['email_id']:
-        columns.append('email_id = %s')
-        values.append(request.form['email_id'])
-
-    if request.form['phone_no']:
-        columns.append('phone_no = %s')
-        values.append(request.form['phone_no'])
-
-    if request.form['dep_id']:
-        columns.append('dep_id = %s')
-        values.append(request.form['dep_id'])
-
-    # Make sure we are updating at least one field
-    if columns:
-        # Add the emp_id at the end of the values list (for the WHERE condition)
-        values.append(emp_id)
-        
-        # Join the columns with commas to form the SET part of the query
-        update_query = f"UPDATE employee SET {', '.join(columns)} WHERE emp_id = %s"
-        
-        # Execute the query
-        cur.execute(update_query, values)
-        conn.commit()
-
-    cur.close()
-    conn.close()
-
-    return redirect(url_for('index'))
 
 
 # Delete Employee
