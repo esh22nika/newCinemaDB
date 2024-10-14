@@ -206,15 +206,27 @@ def index():
         if conn:
             conn.close()
 @app.route('/employee_list')
-def view_employees():
+def view_employee():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)  # To access columns by name
-    cursor.execute('SELECT * FROM employees')  # Query to get all employee data
-    employees = cursor.fetchall()  # Fetch all results
+    cursor.execute('SELECT * FROM employee')  # Query to get all employee data
+    employee = cursor.fetchall()  # Fetch all results
     cursor.close()
     conn.close()
 
-    return render_template('employee_list.html', employees=employees)
+    return render_template('employee_list.html', employee=employee)
+
+@app.route('/view_payment')
+def view_payment():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)  # To access columns by name
+    cursor.execute('SELECT * FROM payment')  # Query to get all payment data
+    payment = cursor.fetchall()  # Fetch all results
+    cursor.close()
+    conn.close()
+
+    return render_template('view_payment.html', payment=payment)
+
 @app.route('/back_to_dashboard')
 def back_to_dashboard():
     return redirect(url_for('index'))  
@@ -253,7 +265,7 @@ def update_employee():
     new_value = request.form['new_value']
     
     # Create SQL query to update the specific field
-    query = f"UPDATE employees SET {update_field} = %s WHERE emp_id = %s"
+    query = f"UPDATE employee SET {update_field} = %s WHERE emp_id = %s"
     cur.execute(query, (new_value, emp_id))
     conn.commit()
 
