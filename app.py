@@ -457,10 +457,7 @@ def movie_details():
             cur.close()
             conn.close()
         
-        if request.method == 'POST':
-    # Process the form and save booking info
-            return redirect(url_for('select_seats'))
-
+        
     return render_template('movie_details.html')
 
 
