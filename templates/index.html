@@ -50,10 +50,39 @@
 <body>
 <h1>Admin View</h1>
     
-    <section id="employees">
-        
+    <section id="payments">
+        <h2>Payment Information</h2>
         <table border="1">
-            
+            <thead>
+                <tr>
+                    <th>Payment ID</th>
+                    <th>Employee ID</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <!-- Add other payment fields here -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payment_data %}
+                <tr>
+                    <td>{{ payment[0] }}</td>
+                    <td>{{ payment[1] }}</td>
+                    <td>{{ payment[2] }}</td>
+                    <td>{{ payment[3] }}</td>
+                    <td>{{ payment[4] }}</td>
+                    <td>{{ payment[5] }}</td>
+                    <!-- Add other payment fields here -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section id="employees">
+        <h2>Employee List</h2>
+        <table border="1">
             <tbody>
                 {% for row in data %}
                 <tr>
@@ -74,6 +103,7 @@
                 {% endfor %}
             </tbody>
         </table>
+
         
         <h2>Add a New Employee</h2>
         <form action="/create" method="post">
