@@ -213,6 +213,18 @@ def index():
             cur.close()
         if conn:
             conn.close()
+
+@app.route('/view_payment')
+def view_payment():
+    conn=db_conn()
+    cur=conn.cursor()
+    cur.execute('''SELECT * FROM payment''')
+    payment=cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('view_payment.html',payment=payment)
+
+
 @app.route('/employee_list')
 def view_employee():
     conn = get_db_connection()
@@ -224,16 +236,7 @@ def view_employee():
 
     return render_template('employee_list.html', employee=employee)
 
-@app.route('/view_payment')
-def view_payment():
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)  # To access columns by name
-    cursor.execute('SELECT * FROM payment')  # Query to get all payment data
-    payment = cursor.fetchall()  # Fetch all results
-    cursor.close()
-    conn.close()
-    print(payment)
-    return render_template('view_payment.html', payment=payment)
+
 
 @app.route('/back_to_dashboard')
 def back_to_dashboard():

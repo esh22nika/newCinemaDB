@@ -21,14 +21,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for payment in payments %}
+            {% for row in payment %}
             <tr>
-                <td>{{ payment.payment_id }}</td>
-                <td>{{ payment.customer_id }}</td>
-                <td>{{ payment.ticket_id }}</td>
-                <td>{{ payment.amount }}</td>
-                <td>{{ payment.payment_method }}</td>
-                <td>{{ payment.payment_date }}</td>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
             </tr>
             {% endfor %}
         </tbody>
