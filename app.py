@@ -224,8 +224,6 @@ def view_payment():
     conn.close()
     return render_template('view_payment.html',payment=payment)
 
-
-
 @app.route('/employee_list')
 def view_employee():
     conn = get_db_connection()
