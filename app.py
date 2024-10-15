@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for,session
 import psycopg2
+from psycopg2.extras import RealDictCursor
 import secrets
 import random
 import logging
@@ -171,7 +172,14 @@ def runQuery(query, params=None):
     conn.commit()
     cur.close()
     conn.close()
-
+def get_db_connection():
+    conn = psycopg2.connect(
+        host="localhost",
+        database="cinema",
+        user="postgres",
+        password="root"
+    )
+    return conn
 
 # ------------- ADMIN FUNCTIONALITIES -------------
 
@@ -224,7 +232,7 @@ def view_payment():
     payment = cursor.fetchall()  # Fetch all results
     cursor.close()
     conn.close()
-
+    print(payment)
     return render_template('view_payment.html', payment=payment)
 
 @app.route('/back_to_dashboard')

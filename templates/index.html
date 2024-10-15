@@ -12,19 +12,45 @@
             font-family: Arial, sans-serif;
             color: white;
         }
+
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1; /* Behind content */
+        }
+
         h1, h2 {
             color: #e14907;
             text-align: center;
         }
+
         table {
             width: 100%;
+            border-collapse: collapse; /* Remove double borders */
+            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.7);
             color: white;
         }
-        table, th, td {
-            border: 1px solid white;
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
         }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker header */
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2); /* Slight contrast for rows */
+        }
+
         form {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -32,205 +58,205 @@
             width: 80%;
             color: white;
         }
+
+        fieldset {
+            border: 1px solid #e14907;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            color: #e14907;
+            padding: 0 10px;
+        }
+
         input, select {
-            width: 100%;
-            padding: 10px;
+            width: 95%; /* Slightly smaller to avoid overflow */
+            padding: 8px;
             margin: 5px 0;
         }
+
+        td {
+            padding: 10px; /* Add some padding for better spacing */
+        }
+
+        form table {
+            width: 100%; /* Ensure table fits container */
+        }
+
         input[type="submit"] {
             background-color: #e14907;
             color: white;
+            border: none;
+            padding: 10px 20px;
             cursor: pointer;
+            font-size: 16px;
         }
+
         input[type="submit"]:hover {
+            background-color: #f45b14;
+        }
+
+        ::placeholder {
+            color: #ccc; /* Light grey placeholder */
+        }
+        h1, h2 {
+            color: #e14907;
+            text-align: center;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #e14907;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin: 20px;
+            display: block;
+            margin: 0 20px; /* Add some space between the buttons */
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button:hover {
             background-color: #f45b14;
         }
     </style>
 </head>
 <body>
 <h1>Admin View</h1>
+    <div class="button-container">
+        <button onclick="location.href='/view_payment'">View Payments</button>
+        <button onclick="location.href='/view_employee'">View Employees</button>
+    </div>
     
-    <section id="payments">
-        <h2>Payment Information</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Payment ID</th>
-                    <th>Employee ID</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Method</th>
-                    <th>Status</th>
-                    <!-- Add other payment fields here -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in payment_data %}
-                <tr>
-                    <td>{{ payment[0] }}</td>
-                    <td>{{ payment[1] }}</td>
-                    <td>{{ payment[2] }}</td>
-                    <td>{{ payment[3] }}</td>
-                    <td>{{ payment[4] }}</td>
-                    <td>{{ payment[5] }}</td>
-                    <!-- Add other payment fields here -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+        <fieldset>
+            <legend>Add a New Employee</legend>
+            <form action="/create" method="post">
+                <table>
+                    <tr>
+                        <td><label for="emp_id">Employee ID:</label></td>
+                        <td><input type="text" id="emp_id" name="emp_id" placeholder="Employee ID" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="salary">Salary:</label></td>
+                        <td><input type="number" id="salary" name="salary" placeholder="Enter Salary" min="0" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="birth_date">Birth Date:</label></td>
+                        <td><input type="date" id="birth_date" name="birth_date" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="age">Age:</label></td>
+                        <td><input type="number" id="age" name="age" min="18" max="99" placeholder="Age" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="first_name">First Name:</label></td>
+                        <td><input type="text" id="first_name" name="first_name" placeholder="First Name" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="middle_name">Middle Name:</label></td>
+                        <td><input type="text" id="middle_name" name="middle_name" placeholder="Middle Name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="last_name">Last Name:</label></td>
+                        <td><input type="text" id="last_name" name="last_name" placeholder="Last Name" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="gender">Gender:</label></td>
+                        <td>
+                            <select id="gender" name="gender" required>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                                <option value="O">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="email_id">Email ID:</label></td>
+                        <td><input type="email" id="email_id" name="email_id" placeholder="Email ID" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="phone_no">Phone Number:</label></td>
+                        <td><input type="tel" id="phone_no" name="phone_no" placeholder="Phone Number" pattern="[0-9]{10}" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="dep_id">Department ID:</label></td>
+                        <td><input type="number" id="dep_id" name="dep_id" placeholder="Department ID" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="username">Username:</label></td>
+                        <td><input type="text" id="username" name="username" placeholder="Username" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password:</label></td>
+                        <td><input type="text" id="password" name="password" placeholder="Password" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Create"></td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
 
-    <section id="employees">
-        <h2>Employee List</h2>
-        <table border="1">
-            <tbody>
-                {% for row in data %}
-                <tr>
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>{{ row[4] }}</td>
-                    <td>{{ row[5] }}</td>
-                    <td>{{ row[6] }}</td>
-                    <td>{{ row[7] }}</td>
-                    <td>{{ row[8] }}</td>
-                    <td>{{ row[9] }}</td>
-                    <td>{{ row[10] }}</td>
-                    <td>{{ row[11] }}</td>
-                    <td>{{ row[12] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <fieldset>
+            <legend>Update an Employee</legend>
+            <form action="/update" method="post">
+                <table>
+                    <tr>
+                        <td><label for="emp_id_update">Employee ID:</label></td>
+                        <td><input type="text" id="emp_id_update" name="emp_id" placeholder="Employee ID" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="update_field">Field to Update:</label></td>
+                        <td>
+                            <select id="update_field" name="update_field" required>
+                                <option value="salary">Salary</option>
+                                <option value="birth_date">Birth Date</option>
+                                <option value="age">Age</option>
+                                <option value="first_name">First Name</option>
+                                <option value="middle_name">Middle Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="gender">Gender</option>
+                                <option value="email_id">Email ID</option>
+                                <option value="phone_no">Phone Number</option>
+                                <option value="dep_id">Department ID</option>
+                                <option value="username">Username</option>
+                                <option value="password">Password</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="new_value">New Value:</label></td>
+                        <td><input type="text" id="new_value" name="new_value" placeholder="Enter New Value" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Update"></td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
 
-        
-        <h2>Add a New Employee</h2>
-        <form action="/create" method="post">
-            <table>
-                <tr>
-                    <td><label for="emp_id">Employee ID:</label></td>
-                    <td><input type="text" id="emp_id" name="emp_id" placeholder="Employee ID" required></td>
-                </tr>
-                <!-- Add other fields here -->
-                <tr>
-                    <td><label for="salary">Salary:</label></td>
-                    <td><input type="number" id="salary" name="salary" placeholder="Enter Salary" min="0" required></td>
-                </tr>
-                <tr>
-                    <td><label for="birth_date">Birth Date:</label></td>
-                    <td><input type="date" id="birth_date" name="birth_date" required></td>
-                </tr>
-                <tr>
-                    <td><label for="age">Age:</label></td>
-                    <td><input type="number" id="age" name="age" min="18" max="99" placeholder="Age" required></td>
-                </tr>
-                <tr>
-                    <td><label for="first_name">First Name:</label></td>
-                    <td><input type="text" id="first_name" name="first_name" placeholder="First Name" required></td>
-                </tr>
-                <tr>
-                    <td><label for="middle_name">Middle Name:</label></td>
-                    <td><input type="text" id="middle_name" name="middle_name" placeholder="Middle Name"></td>
-                </tr>
-                <tr>
-                    <td><label for="last_name">Last Name:</label></td>
-                    <td><input type="text" id="last_name" name="last_name" placeholder="Last Name" required></td>
-                </tr>
-                <tr>
-                    <td><label for="gender">Gender:</label></td>
-                    <td>
-                        <select id="gender" name="gender" required>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                            <option value="O">Other</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="email_id">Email ID:</label></td>
-                    <td><input type="email" id="email_id" name="email_id" placeholder="Email ID" required></td>
-                </tr>
-                <tr>
-                    <td><label for="phone_no">Phone Number:</label></td>
-                    <td><input type="tel" id="phone_no" name="phone_no" placeholder="Phone Number" pattern="[0-9]{10}" required></td>
-                </tr>
-                <tr>
-                    <td><label for="dep_id">Department ID:</label></td>
-                    <td><input type="number" id="dep_id" name="dep_id" placeholder="Department ID" required></td>
-                </tr>
-                <tr>
-                    <td><label for="username">Username:</label></td>
-                    <td><input type="text" id="username" name="username" placeholder="Username" required></td>
-                </tr>
-                <tr>
-                    <td><label for="password">Password:</label></td>
-                    <td><input type="text" id="password" name="password" placeholder="Password" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Create"></td>
-                </tr>
-            </table>
-        </form>
-        <h2>Update an Employee</h2>
-        <form action="/update" method="post">
-            <table>
-                <tr>
-                    <td><label for="emp_id_update">Employee ID:</label></td>
-                    <td><input type="text" id="emp_id_update" name="emp_id" placeholder="Employee ID" required></td>
-                </tr>
-                <tr>
-                    <td><label for="update_field">Field to Update:</label></td>
-                    <td>
-                        <select id="update_field" name="update_field" required>
-                            <option value="salary">Salary</option>
-                            <option value="birth_date">Birth Date</option>
-                            <option value="age">Age</option>
-                            <option value="first_name">First Name</option>
-                            <option value="middle_name">Middle Name</option>
-                            <option value="last_name">Last Name</option>
-                            <option value="gender">Gender</option>
-                            <option value="email_id">Email ID</option>
-                            <option value="phone_no">Phone Number</option>
-                            <option value="dep_id">Department ID</option>
-                            <option value="username">Username</option>
-                            <option value="password">Password</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="new_value">New Value:</label></td>
-                    <td><input type="text" id="new_value" name="new_value" placeholder="New Value" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Update"></td>
-                </tr>
-            </table>
-        </form>
-        <h2>Delete an Employee</h2>
-        <form action="/delete" method="post">
-            <table>
-                <tr>
-                    <td><label for="emp_id_delete">Employee ID:</label></td>
-                    <td><input type="text" id="emp_id_delete" name="emp_id" placeholder="Employee ID" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Delete"></td>
-                </tr>
-            </table>
-        </form>
+        <fieldset>
+            <legend>Delete an Employee</legend>
+            <form action="/delete" method="post">
+                <table>
+                    <tr>
+                        <td><label for="emp_id_delete">Employee ID:</label></td>
+                        <td><input type="text" id="emp_id_delete" name="emp_id" placeholder="Employee ID" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Delete"></td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+
     </section>
-    
-    <script>
-        fetch('/debug_data')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Debug data:', data);
-            })
-            .catch(error => {
-                console.error('Error fetching debug data:', error);
-            });
-        </script>
 </body>
-
 </html>
