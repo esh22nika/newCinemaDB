@@ -4,12 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction details and revenue</title>
+    <style>
+        body {
+            background-image: url('https://i.redd.it/8sqkca4mtvl21.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1; /* Behind content */
+        }
+
+        h1, h2 {
+            color: #e14907;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Remove double borders */
+            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+            text-align: center;
+            color: white;
+            margin: 20px 0; /* Add some margin for spacing */
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker header */
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2); /* Slight contrast for rows */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #e14907; /* Button background color */
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px; /* Rounded corners for button */
+            margin: 20px 0; /* Add some margin for spacing */
+        }
+
+        button:hover {
+            background-color: #c33705; /* Darker shade on hover */
+        }
+
+        .button-container {
+            text-align: center; /* Center the button */
+        }
+
+        .total-revenue {
+            font-size: 24px;
+            text-align: center;
+            color: #e14907;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
     <h1>Payment Data</h1>
 
+    <!-- Total Revenue Display -->
+    <div class="total-revenue">
+        Total Revenue: ${{ total_revenue }}
+    </div>
+
     <!-- Table to display payment data -->
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>Payment ID</th>
@@ -35,8 +114,10 @@
     </table>
 
     <!-- Button to go back to the Admin Dashboard -->
-    <a href="{{ url_for('back_to_dashboard') }}">
-        <button>Back to Dashboard</button>
-    </a>
+    <div class="button-container">
+        <a href="{{ url_for('back_to_dashboard') }}">
+            <button>Back to Dashboard</button>
+        </a>
+    </div>
 </body>
 </html>

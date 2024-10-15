@@ -216,13 +216,19 @@ def index():
 
 @app.route('/view_payment')
 def view_payment():
-    conn=db_conn()
-    cur=conn.cursor()
+    conn = db_conn()
+    cur = conn.cursor()
     cur.execute('''SELECT * FROM payment''')
-    payment=cur.fetchall()
+    payment = cur.fetchall()
+    
+    # Calculate total revenue
+    total_revenue = sum(row[3] for row in payment)  # Assuming the amount is in the fourth column (index 3)
+
     cur.close()
     conn.close()
-    return render_template('view_payment.html',payment=payment)
+    
+    # Pass total_revenue to the template
+    return render_template('view_payment.html', payment=payment, total_revenue=total_revenue)
 
 @app.route('/employee_list')
 def view_employee():
