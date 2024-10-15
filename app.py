@@ -213,16 +213,22 @@ def index():
             cur.close()
         if conn:
             conn.close()
+
 @app.route('/employee_list')
 def view_employee():
     conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)  # To access columns by name
-    cursor.execute('SELECT * FROM employee')  # Query to get all employee data
-    employee = cursor.fetchall()  # Fetch all results
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('SELECT * FROM employee')
+    employee = cursor.fetchall()
     cursor.close()
     conn.close()
-
+    
+    # Debugging: print the fetched data
+    print("Fetched Employee Data:", employee)  # Add this line
+    
     return render_template('employee_list.html', employee=employee)
+
+
 
 @app.route('/view_payment')
 def view_payment():

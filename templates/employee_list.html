@@ -3,13 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Data</title>
+    <title>Employee List</title>
+    <style>
+        body {
+            background-image: url('https://i.redd.it/8sqkca4mtvl21.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1; /* Behind content */
+        }
+
+        h1, h2 {
+            color: #e14907;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Remove double borders */
+            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+            text-align: center;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker header */
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2); /* Slight contrast for rows */
+        }
+    </style>
 </head>
 <body>
-    <h1>Employee Data</h1>
-
-    <!-- Table to display employee data -->
-    <table border="1">
+    <h1>Employee List</h1>
+    <table>
         <thead>
             <tr>
                 <th>Employee ID</th>
@@ -20,35 +65,30 @@
                 <th>Middle Name</th>
                 <th>Last Name</th>
                 <th>Gender</th>
-                <th>Email ID</th>
+                <th>Email</th>
                 <th>Phone Number</th>
                 <th>Department ID</th>
                 <th>Username</th>
             </tr>
         </thead>
         <tbody>
-            {% for employee in employees %}
+            {% for emp in employee %}
             <tr>
-                <td>{{ employee['emp_id'] }}</td>
-                <td>{{ employee['salary'] }}</td>
-                <td>{{ employee['birth_date'] }}</td>
-                <td>{{ employee['age'] }}</td>
-                <td>{{ employee['first_name'] }}</td>
-                <td>{{ employee['middle_name'] }}</td>
-                <td>{{ employee['last_name'] }}</td>
-                <td>{{ employee['gender'] }}</td>
-                <td>{{ employee['email_id'] }}</td>
-                <td>{{ employee['phone_no'] }}</td>
-                <td>{{ employee['dep_id'] }}</td>
-                <td>{{ employee['username'] }}</td>
+                <td>{{ emp.emp_id }}</td>
+                <td>{{ emp.salary }}</td>
+                <td>{{ emp.birth_date }}</td>
+                <td>{{ emp.age }}</td>
+                <td>{{ emp.first_name }}</td>
+                <td>{{ emp.middle_name }}</td>
+                <td>{{ emp.last_name }}</td>
+                <td>{{ emp.gender }}</td>
+                <td>{{ emp.email_id }}</td>
+                <td>{{ emp.phone_no }}</td>
+                <td>{{ emp.dep_id }}</td>
+                <td>{{ emp.username }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <!-- Button to go back to the Admin Dashboard -->
-    <a href="{{ url_for('back_to_dashboard') }}">
-        <button>Back to Dashboard</button>
-    </a>
 </body>
 </html>
