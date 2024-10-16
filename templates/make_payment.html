@@ -4,40 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make Payment</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Payment Information</h2>
 
-    <header>
-        <h1>Make Payment</h1>
-    </header>
+        <!-- Flash message for successful payment -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <h4 class="text-primary">Amount to Pay: ${{ random_amount }}</h4>
+        <!-- Payment form -->
+        <form method="POST" action="/make_payment">
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+            </div>
 
-    <section>
-        <form action="{{ url_for('make_payment') }}" method="POST">
-            <table>
-                <tr>
-                    <td><label for="payment_amount">Payment Amount:</label></td>
-                    <td><input type="number" id="payment_amount" name="payment_amount" required></td>
-                </tr>
-                <tr>
-                    <td><label for="payment_method">Payment Method:</label></td>
-                    <td>
-                        <select id="payment_method" name="payment_method" required>
-                            <option value="Credit Card">Credit Card</option>
-                            <option value="Debit Card">Debit Card</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Cash">Cash</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" value="Complete Booking">
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group">
+                <label for="payment_method">Payment Method</label>
+                <select class="form-control" id="payment_method" name="payment_method" required>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="Net Banking">Net Banking</option>
+                    <option value="UPI">UPI</option>
+                </select>
+            </div>
+
+            <!-- Submit button to process payment -->
+            <button type="submit" class="btn btn-primary">Proceed with Payment</button>
         </form>
-    </section>
 
+        <!-- Button to redirect to Home Page after transaction -->
+        <a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary mt-4">Go to Home</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
