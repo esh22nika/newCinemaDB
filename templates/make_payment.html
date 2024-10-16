@@ -6,6 +6,87 @@
     <title>Make Payment</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    body {
+        background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.okynemedialab.com%2Fwp-content%2Fuploads%2F2019%2F11%2Fnetflix-background-50-Black-1024x576.jpg&f=1&nofb=1&ipt=444f75633b8e77d7e162a8e1d791c5070cca2776e2cbb6fadad6de623b08206c&ipo=images');
+        background-size: cover;
+        background-repeat: no-repeat;
+        font-family: Arial, sans-serif;
+        color: white;
+    }
+
+    body:before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        z-index: -1; /* Behind content */
+    }
+
+    h1, h2 {
+        color: #e14907;
+        text-align: center;
+    }
+
+    /* Custom style for the Amount to Pay text */
+    h4 {
+        color: #f97300; /* Orange color for the Amount text */
+    }
+
+    /* Table styling */
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Remove double borders */
+        background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+        text-align: center;
+        color: white;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: rgba(0, 0, 0, 0.8); /* Darker header */
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.2); /* Slight contrast for rows */
+    }
+
+    /* Style for the Proceed with Payment button */
+    .btn-primary {
+        background-color: #f97300; /* Orange button */
+        border-color: #f97300; /* Orange border */
+        color: white; /* White text */
+    }
+
+    .btn-primary:hover {
+        background-color: #fa8a33; /* Lighter orange on hover */
+        border-color: #fa8a33;
+    }
+
+    .back-button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #e14907;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .back-button:hover {
+        background-color: #c13905;
+    }
+</style>
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">Payment Information</h2>
@@ -18,7 +99,10 @@
                 </div>
             {% endif %}
         {% endwith %}
-        <h4 class="text-primary">Amount to Pay: ${{ random_amount }}</h4>
+
+        <!-- Amount to Pay section with custom orange color -->
+        <h4>Amount to Pay: ${{ random_amount }}</h4>
+
         <!-- Payment form -->
         <form method="POST" action="/make_payment">
             <div class="form-group">
@@ -36,7 +120,7 @@
                 </select>
             </div>
 
-            <!-- Submit button to process payment -->
+            <!-- Orange submit button to process payment -->
             <button type="submit" class="btn btn-primary">Proceed with Payment</button>
         </form>
 

@@ -464,7 +464,21 @@ def movie_details():
         movie_names = [row[0] for row in movies]
 
         # Predefined seat ranges for dropdown
-        seat_ranges = ['A1 A2 A3 front left', 'A4 A5 A6 front middle', 'B1 B2 B3 back left', 'B4 B5 B6 back middle']
+        seat_ranges = [
+            'A1 A2 front left',
+            'A3 A4 front middle',
+            'A5 front right',
+            'B1 B2 middle left',
+            'B3 B4 middle middle',
+            'B5 middle right',
+            'C1 C2 back left',
+            'C3 C4 back middle',
+            'C5 back right',
+            'D1 D2 back left',
+            'D3 D4 back middle',
+            'D5 back right'
+        ]
+
         
     # Insert into bookingInfo table
         cur.execute("""
@@ -478,7 +492,7 @@ def movie_details():
         cur.close()
         conn.close()
 
-        return render_template('movie_details.html', movie_names=movie_names, seat_ranges=seat_ranges)
+        return render_template('movie_details.html', movie_names=movie_names,movie_lang=movie_lang, view_type=view_type, show_time=show_time,selected_seats=selected_seats,booking_date=booking_date, no_of_seats= no_of_seats, seat_ranges=seat_ranges)
 
 # Route for payment (UI where user selects payment mode and enters amount)
 @app.route('/make_payment', methods=['GET', 'POST'])
