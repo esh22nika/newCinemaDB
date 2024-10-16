@@ -523,20 +523,35 @@ def make_payment():
     return render_template('make_payment.html', random_amount=random_amount)  # Payment form (mode of payment, amount)
 
 # Route to view the most recent transaction (bill format)
-@app.route('/view_transaction')
-def view_transaction():
-    customer_id = session['customer_id']
-
+@app.route('/customer_transactions', methods=['GET'])
+def customer_transactions():
     conn = db_conn()
-    cur = conn.cursor()
-    # Fetch the most recent transaction
-    cur.execute('''SELECT * FROM payment WHERE customer_id = %s ORDER BY payment_date DESC LIMIT 1''', 
-                (customer_id,))
-    transaction = cur.fetchone()
-    cur.close()
+    cursor = conn.cursor()
+
+    # Add print statements to see what is happening
+    print("Connected to the database!", flush=True)
+    
+    try:
+        # Run the query to fetch the latest transaction
+        cursor.execute("""
+            SELECT ticket_id, amount, payment_method, payment_date
+            FROM paymentinfo
+            ORDER BY payment_date DESC
+            LIMIT 1
+        """)
+        transactions = cursor.fetchall()
+
+        # Print the fetched data to confirm
+        print("Fetched transactions:", transactions, flush=True)
+
+    except Exception as e:
+        print(f"Error while fetching data: {e}", flush=True)
+        transactions = []  # Set empty if there's an error
+
+    cursor.close()
     conn.close()
 
-    return render_template('view_transaction.html', transaction=transaction)  # Display the transaction in bill format
+    return render_template('customer_transactions.html', transactions=transactions)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,40 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Information</title>
+    <title>Latest Transaction</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        h2 {
+            color: orange;
+        }
+
+        .bill {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid orange;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .bill p {
+            margin: 10px 0;
+            text-align: left; /* Align text to the left for better readability */
+        }
+
+        .btn {
+            margin-top: 20px;
+            background-color: orange;
+            border-color: orange;
+        }
+
+        .btn:hover {
+            background-color: darkorange;
+            border-color: darkorange;
+        }
+    </style>
 </head>
 <body>
-    <h1>Payment Information</h1>
+    <div class="container">
+        <h2>Your Latest Transaction</h2>
 
-    <!-- Table to display payment info -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Payment ID</th>
-                <th>Customer ID</th>
-                <th>Ticket ID</th>
-                <th>Amount</th>
-                <th>Payment Method</th>
-                <th>Payment Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for payment in payments %}
-            <tr>
-                <td>{{ payment['payment_id'] }}</td>
-                <td>{{ payment['customer_id'] }}</td>
-                <td>{{ payment['ticket_id'] }}</td>
-                <td>{{ payment['amount'] }}</td>
-                <td>{{ payment['payment_method'] }}</td>
-                <td>{{ payment['payment_date'] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% if payment %}
+        <div class="bill">
+            <p><strong>Payment ID:</strong> {{ payment[0] }}</p>
+            <p><strong>Customer ID:</strong> {{ payment[1] }}</p>
+            <p><strong>Amount:</strong> ${{ payment[2] }}</p>
+            <p><strong>Payment Method:</strong> {{ payment[3] }}</p>
+            <p><strong>Payment Date:</strong> {{ payment[4] }}</p>
+            <p><strong>Status:</strong> {{ payment[5] }}</p>
+            <p><strong>Transaction Reference:</strong> {{ payment[6] }}</p>
+        </div>
+        {% else %}
+        <p>No transactions found.</p>
+        {% endif %}
 
-    <!-- Button to go back to the Admin Dashboard -->
-    <a href="{{ url_for('back_to_dashboard') }}">
-        <button>Back to Dashboard</button>
-    </a>
+        <!-- Back to Dashboard Button -->
+        <a href="{{ url_for('customer_dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
 </body>
 </html>

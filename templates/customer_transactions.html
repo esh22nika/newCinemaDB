@@ -6,47 +6,114 @@
     <title>Customer Transactions</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+<style>
+body {
+    background-image: url('https://i.redd.it/8sqkca4mtvl21.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+body:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+h1 {
+    color: #e14907;
+    text-align: center;
+    margin-top: 20px;
+}
+
+section {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: white;
+    margin: 20px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+.back-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #e14907;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background-color: #c13905;
+}
+
+p {
+    font-size: 1.5em;
+    color: #FF4500;
+}
+</style>
+
 <body>
 
     <header>
-        <h1>Your Transactions</h1>
+        <h1>Your Latest Transaction</h1>
     </header>
 
     <section>
         {% if transactions %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Transaction ID</th>
-                        <th>Movie</th>
-                        <th>Language</th>
-                        <th>View Type</th>
-                        <th>Show Time</th>
-                        <th>Seats</th>
-                        <th>Total Amount</th>
-                        <th>Payment Method</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for transaction in transactions %}
-                        <tr>
-                            <td>{{ transaction['ticket_id'] }}</td>
-                            <td>{{ transaction['movie_name'] }}</td>
-                            <td>{{ transaction['movie_lang'] }}</td>
-                            <td>{{ transaction['view_type'] }}</td>
-                            <td>{{ transaction['show_time'] }}</td>
-                            <td>{{ transaction['no_of_seats'] }}</td>
-                            <td>{{ transaction['amount'] }}</td>
-                            <td>{{ transaction['payment_method'] }}</td>
-                            <td>{{ transaction['payment_date'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No transactions found.</p>
-        {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction[0] }}</td>  <!-- ticket_id -->
+                    <td>{{ transaction[1] }}</td>  <!-- amount -->
+                    <td>{{ transaction[2] }}</td>  <!-- payment_method -->
+                    <td>{{ transaction[3] }}</td>  <!-- payment_date -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No transactions found.</p>
+{% endif %}
+
+
+        <a href="{{ url_for('customer_dashboard') }}"><button class="back-button">Back to Dashboard</button></a>
     </section>
 
 </body>
