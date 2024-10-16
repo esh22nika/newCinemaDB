@@ -483,27 +483,30 @@ def movie_details():
 # Route for payment (UI where user selects payment mode and enters amount)
 @app.route('/make_payment', methods=['GET', 'POST'])
 def make_payment():
+    conn = db_conn()
+    cur = conn.cursor()
     if request.method == 'POST':
+        
         payment_id=random.randint(1,1000)
         customer_id=6
-        ticket_id=random.randint(1,1000)
+        cur.execute('''SELECT ticket_id FROM bookingInfo ORDER BY booking_date DESC LIMIT 1''')
+        ticket_id = cur.fetchone()[0]
         amount = request.form['amount']
         payment_method = request.form['payment_method']
 
-        conn = db_conn()
-        cur = conn.cursor()
-        random_amount = random.randint(200, 1000)
+        
+        
         # Insert payment info into payment table
         cur.execute('''INSERT INTO paymentInfo (payment_id,customer_id, ticket_id, amount, payment_method, payment_date) 
                        VALUES (%s, %s, %s, %s, %s,NOW())''', 
-                       (customer_id, 1, 1, payment_method, amount))  # Use a default movie_id and num_seats
+                       (payment_id,customer_id,ticket_id, amount, payment_method))  # Use a default movie_id and num_seats
         conn.commit()
         cur.close()
         conn.close()
 
         flash("Transaction Complete!")
-
-    return render_template('make_payment.html')  # Payment form (mode of payment, amount)
+    random_amount = random.randint(200, 600)
+    return render_template('make_payment.html', random_amount=random_amount)  # Payment form (mode of payment, amount)
 
 # Route to view the most recent transaction (bill format)
 @app.route('/view_transaction')
