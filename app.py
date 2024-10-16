@@ -546,7 +546,7 @@ def view_transaction():
     conn = db_conn()
     cur = conn.cursor()
     # Fetch the most recent transaction
-    cur.execute('''SELECT * FROM payment WHERE customer_id = %s ORDER BY transaction_time DESC LIMIT 1''', 
+    cur.execute('''SELECT * FROM payment WHERE customer_id = %s ORDER BY payment_date DESC LIMIT 1''', 
                 (customer_id,))
     transaction = cur.fetchone()
     cur.close()
