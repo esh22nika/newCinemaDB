@@ -44,9 +44,29 @@ Ensure you have the following installed on your system:
 - Flask and dependencies (`pip install -r requirements.txt`)
 - pgAdmin (optional, for database management)
 
+## Database Schema
+
+- **Customers**: Stores customer information such as name, email, and password.
+- **Movies**: Stores movie details such as name, language, view type, and showtimes.
+- **Bookings**: Stores booking information, including customer, movie, and ticket details.
+- **Employees**: Stores employee information.
+- **Admins**: Stores admin information.
+
+## How to Use
+
+- **Customer**: Browse and book tickets for movies.
+- **Employee**: Add movies to the database and sell tickets.
+- **Admin**: Manage employees, view revenue, and check movie performance.
+
+## Future Improvements
+
+- Add real-time seat availability tracking.
+- Implement customer reviews and ratings for movies.
+- Enhance UI/UX with a more interactive design.
+
 ## Legal Notice
 
-This software includes code from [project name/link] licensed under the MIT License (see LICENSE.md for details).
+This software includes code from [https://codepen.io/Gogh/pen/gOqVqBx] which inspired the login UI, it is licensed under the MIT License (see LICENSE.md for details).
 
 All movie posters used in this project are for educational and personal purposes only. The posters are not owned by the project creator and are sourced from various websites. All copyrights belong to their respective owners.
 
