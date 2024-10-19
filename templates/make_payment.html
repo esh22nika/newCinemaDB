@@ -8,7 +8,7 @@
 </head>
 <style>
     body {
-        background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.okynemedialab.com%2Fwp-content%2Fuploads%2F2019%2F11%2Fnetflix-background-50-Black-1024x576.jpg&f=1&nofb=1&ipt=444f75633b8e77d7e162a8e1d791c5070cca2776e2cbb6fadad6de623b08206c&ipo=images');
+        background-image: url('https://cdn.northstarmoving.com/blog/wp-content/uploads/2011/08/arclight.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         font-family: Arial, sans-serif;
@@ -101,7 +101,7 @@
         {% endwith %}
 
         <!-- Amount to Pay section with custom orange color -->
-        <h4>Amount to Pay: ${{ random_amount }}</h4>
+        <h4>Amount to Pay: {{ random_amount }}</h4>
 
         <!-- Payment form -->
         <form method="POST" action="/make_payment">

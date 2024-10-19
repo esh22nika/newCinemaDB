@@ -103,19 +103,17 @@ img:nth-child(3) {
 /* Login Form */
 .login {
   position: absolute;
-  width: 300px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 20px;
+  width: 350px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
 .login h2 {
   font-size: 2em;
-  color: #fff;
+  color: #070000;
 }
 
 .login .inputBx {
@@ -131,7 +129,7 @@ img:nth-child(3) {
   border: 2px solid #fff;
   border-radius: 40px;
   font-size: 1.2em;
-  color: #fff;
+  color: #0a0000;
   outline: none;
 }
 
@@ -142,7 +140,7 @@ img:nth-child(3) {
 }
 
 .login .inputBx input::placeholder {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(6, 0, 0, 0.9);
 }
 
 .login .links {
@@ -153,6 +151,29 @@ img:nth-child(3) {
 }
 
 .login .links a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
 }
+
+.login .sign-up-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6600; /* Orange color */
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 10px; /* Adds a smaller gap from the login button */
+}
+
+.login .sign-up-btn:hover {
+  background-color: #e65c00; /* Slightly darker orange on hover */
+}
+
+.form-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px; /* Ensures the group sits well within the form */
+}
+
