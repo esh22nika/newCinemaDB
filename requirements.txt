@@ -1,0 +1,4 @@
+Flask==2.2.3
+psycopg2-binary==2.9.5
+Flask-Session==0.4.0  # If using sessions
+Flask-Flash==2.0.0    # If using flash messages
